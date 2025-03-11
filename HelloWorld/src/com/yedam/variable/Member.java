@@ -28,6 +28,10 @@ public class Member {
 	public int getScore() {
 		return score;
 	}
+	public void setName(String name) {
+		this.name = name;
+		
+	}
 	// score 필드의 값을 지정
 	public void setScore(int score) {
 		if(score < 0 || score > 100) {

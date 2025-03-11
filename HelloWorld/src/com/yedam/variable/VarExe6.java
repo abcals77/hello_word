@@ -28,21 +28,21 @@ public class VarExe6 {
 		Scanner scn = new Scanner(System.in);
 		
 		Member m1 = new Member(); // 인스턴스 생성
-		m1.name = "홍길동";
-		System.out.println(m1.score);
+		m1.setName("홍길동");
+		System.out.println(m1.getScore());
 		Member m2 = new Member(); // 인스턴스 생성
-		m2.name = "최민수";
+		m2.setName("최민수");
 		Member m3 = new Member(); // 인스턴스 생성
-		m3.name = "김병수";
+		m3.setName("김병수");
 		Member m4 = new Member(); // 인스턴스 생성
-		m4.name = "박인만";
+		m4.setName("박인만");
 
 		// 배열.
 		Member[] members = { m1, m2, m3, m4 };
 		// 70 ~ 100 사이의 임의값으로 점수 지정
 		for(int i = 0; i < members.length; i++) {
-			members[i].score = ((int) (Math.random() * 31)) + 70;
-			System.out.println(members[i].name + " 점수는 " + members[i].score);
+			members[i].setScore(((int) (Math.random() * 31)) + 70);
+			System.out.println(members[i].getName() + " 점수는 " + members[i].getScore());
 		}
 		
 		// 조회이름을 입력 -> 점수출력.
@@ -51,8 +51,8 @@ public class VarExe6 {
 		
 		// for 반복문 활용
 		for(int i = 0; i < members.length; i++) {
-			if(members[i].name.equals(search)) {
-				System.out.println(members[i].name + "의 점수는 "+ members[i].score);
+			if(members[i].getName().equals(search)) {
+				System.out.println(members[i].getName() + "의 점수는 "+ members[i].getScore());
 			}
 		}
 	
