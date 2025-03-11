@@ -47,7 +47,7 @@ public class ArrayExe3Calendar {
 		}
 		// 날짜출력. "1" -> 1 : Integer.parseInt();
 		System.out.println();
-		int month = 2;
+		int month = 3;
 		int space = getFirstDay(month); // 1일의 위치값.
 		int lastDate = getLastDate(month); // 월의 마지막날.
 		// 공백갯수만큼 빈칸.
@@ -57,6 +57,10 @@ public class ArrayExe3Calendar {
 		for(int i = 1; i <= lastDate; i++) {
 			if(String.valueOf(i).length() == 1) { // String.valueOf 정수를 문자로 변환한 후 length 글자 수 체크
 				System.out.print("   " + i);
+			}else if(month == 3 && i == 21){
+				System.out.print(" test");
+			}else if(month == 3 && i == 22){
+				System.out.print(" " + i);
 			}else {
 				System.out.print("  " + i);
 			}
