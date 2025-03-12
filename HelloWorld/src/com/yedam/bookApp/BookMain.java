@@ -222,7 +222,7 @@ public class BookMain {
 		boolean run = true;
 
 		while (run) {
-			System.out.println("1.도서등록 2.수정 3.삭제 4.목록 5.상세조회 9.종료");
+			System.out.println("1.도서등록 2.수정 3.삭제 4.목록 5.상세조회 6.목록조회(출판사) 9.종료");
 			System.out.print("선택>> ");
 			int menu = Integer.parseInt(scn.nextLine());
 			switch (menu) {
