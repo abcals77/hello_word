@@ -29,7 +29,7 @@ public class VarExe6 {
 		
 		Member m1 = new Member(); // 인스턴스 생성
 		m1.setName("홍길동");
-		System.out.println(m1.getScore());
+//		System.out.println(m1.getScore());
 		Member m2 = new Member(); // 인스턴스 생성
 		m2.setName("최민수");
 		Member m3 = new Member(); // 인스턴스 생성
