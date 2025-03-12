@@ -214,6 +214,23 @@ public class BookMain {
 		}
 		return null; // 조회결과가 없을 시 null 반환 >> 책 제목에 중복이 없으므로 입력 진행
 	}
+	public static void companyBookList() {
+		String company = "";
+		// 반드시 값을 입력받도록.
+		System.out.print("조회할 출판사 입력>> ");
+		while (true) {
+			company = scn.nextLine();
+			if (!company.isBlank()) {
+				break;
+			}
+			System.out.print("출판사를 입력하세요>> ");
+		}
+		for(int i = 0; i < bookStore.length; i++) {
+			if(bookStore[i] != null && bookStore[i].getCompany().equals(company)) {
+				System.out.println(bookStore[i].showList());
+			}
+		}
+	}
 	
 	
 	public static void main(String[] args) {
@@ -240,6 +257,9 @@ public class BookMain {
 				break;
 			case 5: // 상세조회
 				bookInfo();
+				break;
+			case 6: // 목록조회
+				companyBookList();
 				break;
 			case 9: // 종료.
 				System.out.println("프로그램을 종료합니다.");
