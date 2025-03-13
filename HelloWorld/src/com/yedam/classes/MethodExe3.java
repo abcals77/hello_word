@@ -50,12 +50,14 @@ public class MethodExe3 {
 		// 1 ~ 16까지의 임의수 할당.
 		
 		for (int i = 0; i < intAry.length; i++) {
-			int temp = (int) (Math.random() * 16) + 1;;	
-			for (int j = 0; j < intAry.length; j++) {
-				 
-				
-				
+			int temp = (int) (Math.random() * 16) + 1;	
+			for (int j = 0; j < i; j++) {
+				 if(intAry[j] == temp) {
+					 temp = (int) (Math.random() * 16) + 1;
+					 j = 0;
+				 }				
 			}
+			intAry[i] = temp;
 		}
 		// 출력.
 		for (int i = 0; i < intAry.length; i++) {
