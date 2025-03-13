@@ -14,6 +14,9 @@ public class BookMain {
 		bookStore[0] = new Book("이것이자바다", "신용권", "한빛출", 20000, 1);
 		bookStore[1] = new Book("스트립트기초", "박기초", "우리출", 26000, 2);
 		bookStore[2] = new Book("HTML,CSS", "김하늘", "가람출", 25000, 3);
+		bookStore[3] = new Book("자바칩", "김자바", "한빛출", 25000, 3);
+		bookStore[4] = new Book("C++", "박씨", "우리출", 25000, 3);
+		bookStore[5] = new Book("JS칩", "김제이", "가람출", 25000, 3);
 	}
 	// static : 해당 클래스의 인스턴스를 만들지 않아도 해당 클래스가 실행되면 자동으로 사용가능
 
@@ -48,7 +51,6 @@ public class BookMain {
 //			System.out.println("이미 등록된 제목입니다.");
 //			return;
 //		}
-		
 
 		System.out.print("저자입력>> ");
 		String author = scn.nextLine();
@@ -178,12 +180,47 @@ public class BookMain {
 		int seqNo = 1;
 		System.out.println("순번  제목    저자    가격");
 		System.out.println("============================");
-		for (int i = 0; i < bookStore.length; i++) {
-			if (bookStore[i] != null) {
-				System.out.println(seqNo++ + " " + bookStore[i].showList());
+		Book[] list = searchList(null);
+		for (Book bok : list) {
+			if (bok != null) {
+				System.out.println(seqNo++ + " " + bok.showList());
 			}
 		}
 		System.out.println("============================");
+	} // end of list()
+
+	public static void listCompany() {
+		System.out.print("조회할 출판사 정보>>");
+		String company = scn.nextLine();
+
+		int seqNo = 1;
+		System.out.println("순번  제목    저자    가격");
+		System.out.println("============================");
+		Book[] list = searchList(company);
+		for (Book bok : list) {
+			if (bok != null) {
+				if (bok.getCompany().equals(company)) {
+					System.out.println(seqNo++ + " " + bok.showList());
+				}
+			}
+		}
+		System.out.println("============================");
+
+	} // end of listCompany
+
+	// list와 listCompany에서 활용할 공통메소드
+	public static Book[] searchList(String keyword) {
+		Book[] list = new Book[100];
+		int idx = 0;
+		for (int i = 0; i < bookStore.length; i++) {
+			if (bookStore[i] != null) {
+				if (keyword == null 
+				|| bookStore[i].getCompany().equals(keyword)) {
+					list[idx++] = bookStore[i];
+				}
+			}
+		}
+		return list;
 	}
 
 	public static void bookInfo() {
@@ -198,41 +235,40 @@ public class BookMain {
 			System.out.print("제목을 입력하세요>> ");
 		}
 		Book result = searchBook(title);
-		if(result == null) {
+		if (result == null) {
 			System.out.println("해당하는 책 제목이 없습니다.");
 			return;
 		}
 		System.out.println(result.showBookInfo());
 	}
-	
+
 	// 도서명으로 조회하는 기능
 	public static Book searchBook(String title) { // 책 제목 중복 확인 시 사용
-		for(int i = 0; i < bookStore.length; i++) {
-			if(bookStore[i] != null && bookStore[i].getTitle().equals(title)) {
+		for (int i = 0; i < bookStore.length; i++) {
+			if (bookStore[i] != null && bookStore[i].getTitle().equals(title)) {
 				return bookStore[i]; // 조회결과가 있을 경우에는 Book 반환
 			}
 		}
 		return null; // 조회결과가 없을 시 null 반환 >> 책 제목에 중복이 없으므로 입력 진행
 	}
-	public static void companyBookList() {
-		String company = "";
-		// 반드시 값을 입력받도록.
-		System.out.print("조회할 출판사 입력>> ");
-		while (true) {
-			company = scn.nextLine();
-			if (!company.isBlank()) {
-				break;
-			}
-			System.out.print("출판사를 입력하세요>> ");
-		}
-		for(int i = 0; i < bookStore.length; i++) {
-			if(bookStore[i] != null && bookStore[i].getCompany().equals(company)) {
-				System.out.println(bookStore[i].showList());
-			}
-		}
-	}
-	
-	
+//	public static void companyBookList() {
+//		String company = "";
+//		// 반드시 값을 입력받도록.
+//		System.out.print("조회할 출판사 입력>> ");
+//		while (true) {
+//			company = scn.nextLine();
+//			if (!company.isBlank()) {
+//				break;
+//			}
+//			System.out.print("출판사를 입력하세요>> ");
+//		}
+//		for(int i = 0; i < bookStore.length; i++) {
+//			if(bookStore[i] != null && bookStore[i].getCompany().equals(company)) {
+//				System.out.println(bookStore[i].showList());
+//			}
+//		}
+//	}
+
 	public static void main(String[] args) {
 		// 저장공간,
 		init();
@@ -258,8 +294,9 @@ public class BookMain {
 			case 5: // 상세조회
 				bookInfo();
 				break;
-			case 6: // 목록조회
-				companyBookList();
+			case 6: // 출판사 목록조회
+//				companyBookList();
+				listCompany();
 				break;
 			case 9: // 종료.
 				System.out.println("프로그램을 종료합니다.");

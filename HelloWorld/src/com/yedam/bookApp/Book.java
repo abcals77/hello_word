@@ -12,8 +12,7 @@ public class Book {
 	private int orderNo; // 1, 2, 3
 
 	// 생성자.
-	public Book() {
-	} // 매개값이 없는 기본 생성자
+	public Book() {} // 매개값이 없는 기본 생성자
 
 	public Book(String title, String author, String company, int price) {
 		this.title = title;
@@ -22,10 +21,11 @@ public class Book {
 		this.price = price;
 	}
 	public Book(String title, String author, String company, int price, int orderNo) {
-		this.title = title;
-		this.author = author;
-		this.company = company;
-		this.price = price;
+//		this.title = title;
+//		this.author = author;
+//		this.company = company;
+//		this.price = price;
+		this(title,author,company,price); // this: 생성된 인스턴스.
 		this.orderNo = orderNo;
 	}
 
