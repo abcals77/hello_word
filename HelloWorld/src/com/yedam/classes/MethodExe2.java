@@ -1,6 +1,7 @@
 package com.yedam.classes;
 
 public class MethodExe2 {
+	
 	private Product[] store; // 필드.
 
 	// 생성자
@@ -23,7 +24,7 @@ public class MethodExe2 {
 		}
 		return false; // 배열 안에 null이 없을 경우 false 반환
 	} // end of add(Product prd).
-
+	
 	// 상품이름, ALL
 	Product[] productList(Product prd) {
 		Product[] list = new Product[10];

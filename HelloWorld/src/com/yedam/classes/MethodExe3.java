@@ -3,7 +3,7 @@ package com.yedam.classes;
 public class MethodExe3 {
 
 	// 구구단출력.
-	String gugudan(int num, int toNum) {
+	static String gugudan(int num, int toNum) {
 		// 2 * 1 = 2
 		// 2 * 2 = 4
 		// ...
@@ -18,7 +18,7 @@ public class MethodExe3 {
 		return str;
 	} // end of gugudan.
 
-	void printStar(int cnt, String str) {
+	static void printStar(int cnt, String str) {
 		String line = "";
 		for (int i = 1; i <= cnt; i++) {
 			line += "\n";
@@ -30,7 +30,7 @@ public class MethodExe3 {
 		System.out.println(line);
 	}
 
-	void printStar2(int cnt, String str) {
+	static void printStar2(int cnt, String str) {
 		String line = "";
 		for (int i = 1; i <= cnt; i++) {
 			line += "\n";
@@ -44,7 +44,7 @@ public class MethodExe3 {
 		System.out.println(line);
 	}
 
-	void printCard() {
+	static void printCard() {
 		// 배열선언.
 		int[] intAry = new int[16];
 		// 1 ~ 16까지의 임의수 할당.

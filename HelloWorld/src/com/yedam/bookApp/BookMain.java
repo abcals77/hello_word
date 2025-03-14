@@ -5,12 +5,22 @@ package com.yedam.bookApp;
 
 import java.util.Scanner;
 
-public class BookMain {
+public class BookMain {	
+	// 2. 정적필드. 할당.
+	private static BookMain instance = new BookMain();
+	//  싱글톤 1. 생성자 private 선언
+	private BookMain() {
+		
+	}
+	// 3. getInstance() 제공
+	public static BookMain getInstance() {
+		return instance;
+	}
+	
+	 Scanner scn = new Scanner(System.in);
+	 Book[] bookStore = new Book[100];
 
-	static Scanner scn = new Scanner(System.in);
-	static Book[] bookStore = new Book[100];
-
-	public static void init() {
+	public void init() {
 		bookStore[0] = new Book("이것이자바다", "신용권", "한빛출", 20000, 1);
 		bookStore[1] = new Book("스트립트기초", "박기초", "우리출", 26000, 2);
 		bookStore[2] = new Book("HTML,CSS", "김하늘", "가람출", 25000, 3);
@@ -21,7 +31,7 @@ public class BookMain {
 	// static : 해당 클래스의 인스턴스를 만들지 않아도 해당 클래스가 실행되면 자동으로 사용가능
 
 	// 순번생성.
-	public static int getSequnceNo() {
+	public int getSequnceNo() {
 		int max = 0;
 		for (int i = 0; i < bookStore.length; i++) {
 			if (bookStore[i] != null && bookStore[i].getOrderNo() > max) {
@@ -33,7 +43,7 @@ public class BookMain {
 
 	// 등록
 	// 1. 이미 존재하는 제목은 입력불가.
-	public static void add() {
+	public  void add() {
 		System.out.print("제목입력>> ");
 		String title = scn.nextLine();
 		if (title.isBlank()) {
@@ -73,7 +83,7 @@ public class BookMain {
 	} // end of add().
 		// 수정
 
-	public static void edit() {
+	public  void edit() {
 		System.out.print("수정할 책이름 입력>> ");
 		String title = scn.nextLine();
 		boolean isExist = false;
@@ -133,7 +143,7 @@ public class BookMain {
 		}
 	} // end of edit().
 
-	public static void delete() {
+	public  void delete() {
 		String title = "";
 		// 반드시 값을 입력받도록.
 		System.out.print("삭제할 제목 입력>> ");
@@ -159,7 +169,7 @@ public class BookMain {
 		}
 	}
 
-	public static void list() {
+	public  void list() {
 		// 순번정렬
 		// 순번1 > 순번2, 제외:순번2(null), 순번1(null)
 		Book temp = null;
@@ -189,7 +199,7 @@ public class BookMain {
 		System.out.println("============================");
 	} // end of list()
 
-	public static void listCompany() {
+	public  void listCompany() {
 		System.out.print("조회할 출판사 정보>>");
 		String company = scn.nextLine();
 
@@ -209,7 +219,7 @@ public class BookMain {
 	} // end of listCompany
 
 	// list와 listCompany에서 활용할 공통메소드
-	public static Book[] searchList(String keyword) {
+	public  Book[] searchList(String keyword) {
 		Book[] list = new Book[100];
 		int idx = 0;
 		for (int i = 0; i < bookStore.length; i++) {
@@ -223,7 +233,7 @@ public class BookMain {
 		return list;
 	}
 
-	public static void bookInfo() {
+	public  void bookInfo() {
 		String title = "";
 		// 반드시 값을 입력받도록.
 		System.out.print("조회할 책 제목 입력>> ");
@@ -243,7 +253,7 @@ public class BookMain {
 	}
 
 	// 도서명으로 조회하는 기능
-	public static Book searchBook(String title) { // 책 제목 중복 확인 시 사용
+	public  Book searchBook(String title) { // 책 제목 중복 확인 시 사용
 		for (int i = 0; i < bookStore.length; i++) {
 			if (bookStore[i] != null && bookStore[i].getTitle().equals(title)) {
 				return bookStore[i]; // 조회결과가 있을 경우에는 Book 반환
@@ -269,7 +279,7 @@ public class BookMain {
 //		}
 //	}
 
-	public static void main(String[] args) {
+	public void main(String[] args) {
 		// 저장공간,
 		init();
 		boolean run = true;
