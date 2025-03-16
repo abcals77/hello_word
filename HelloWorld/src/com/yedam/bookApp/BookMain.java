@@ -29,7 +29,34 @@ public class BookMain {
 		bookStore[5] = new Book("JS칩", "김제이", "가람출", 25000, 3);
 	}
 	// static : 해당 클래스의 인스턴스를 만들지 않아도 해당 클래스가 실행되면 자동으로 사용가능
-
+	User[] bookUser = new User[3];
+	
+	public void bookUser() {
+		bookUser[0] = new User("aaa","aaa","aaa");
+		bookUser[1] = new User("bbb","bbb","bbb");
+		bookUser[2] = new User("ccc","ccc","ccc");
+	}
+	public void login(String userId, String password) {
+		
+		boolean isLogin = false;
+		
+		for(int i = 0; i < bookUser.length; i++) {
+			if(bookUser[i].getUserId().equals(userId) 
+					&& bookUser[i].getPassword().equals(password)) {
+				isLogin = true;
+			}
+		}
+		if(isLogin) {
+			System.out.println("ID : " + userId + "님이 로그인했습니다.");
+			main(null);
+		}else {
+			System.out.println("로그인 정보가 일치하지 않습니다.");
+		}
+	}
+	
+		
+	
+	
 	// 순번생성.
 	public int getSequnceNo() {
 		int max = 0;
@@ -282,6 +309,7 @@ public class BookMain {
 	public void main(String[] args) {
 		// 저장공간,
 		init();
+		bookUser();
 		boolean run = true;
 
 		while (run) {
