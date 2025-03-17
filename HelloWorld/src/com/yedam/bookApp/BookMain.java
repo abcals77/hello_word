@@ -36,12 +36,13 @@ public class BookMain {
 		bookUser[1] = new User("bbb","bbb","bbb");
 		bookUser[2] = new User("ccc","ccc","ccc");
 	}
-	public void login(String userId, String password) {
+	// 아이디, 비밀번호 입력.
+	/*public void login(String userId, String password) {
 		
 		boolean isLogin = false;
 		
 		for(int i = 0; i < bookUser.length; i++) {
-			if(bookUser[i].getUserId().equals(userId) 
+			if(bookUser[i].getUserId().equals(userId) //
 					&& bookUser[i].getPassword().equals(password)) {
 				isLogin = true;
 			}
@@ -52,7 +53,17 @@ public class BookMain {
 		}else {
 			System.out.println("로그인 정보가 일치하지 않습니다.");
 		}
+	}*/
+	private boolean login(String id, String pw) {
+		for(int i = 0; i < bookUser.length; i++) {
+			if(bookUser[i].getUserId().equals(id) //
+					&& bookUser[i].getPassword().equals(pw)) {
+				return true;
+			}
+		}
+		return false;
 	}
+	
 	
 		
 	
@@ -307,15 +318,38 @@ public class BookMain {
 //	}
 
 	public void main(String[] args) {
-		// 저장공간,
+		// id, passwword 확인.
+		while(true) {
+			System.out.print("id입력>> ");
+			String id = scn.nextLine();
+			System.out.print("pw입력>> ");
+			String pw = scn.nextLine();
+			
+			if(login(id,pw)) {
+				System.out.println("정상");
+				break;
+			}
+			//id, password 비정상
+			System.out.println("id와 password를 확인하세요.");
+		}		
+		
 		init();
-		bookUser();
 		boolean run = true;
-
+		
 		while (run) {
 			System.out.println("1.도서등록 2.수정 3.삭제 4.목록 5.상세조회 6.목록조회(출판사) 9.종료");
 			System.out.print("선택>> ");
-			int menu = Integer.parseInt(scn.nextLine());
+			int menu = 9;
+			while(true) {
+				try {
+					menu = Integer.parseInt(scn.nextLine());
+					break;
+				} catch(NumberFormatException e) {
+					System.out.println("잘못된 입력 값입니다.");
+					System.out.print("다시 입력해주세요>> ");
+				}
+			}
+			
 			switch (menu) {
 			case 1: // 등록.
 				add();

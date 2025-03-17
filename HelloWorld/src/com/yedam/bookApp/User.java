@@ -10,7 +10,7 @@ public class User {
 		this.userName = userName;
 		this.password = password;
 	}
-
+	// getter, setter 정의.
 	public String getUserId() {
 		return userId;
 	}

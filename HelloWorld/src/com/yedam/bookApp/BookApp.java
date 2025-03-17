@@ -10,7 +10,7 @@ public class BookApp {
 		Scanner scn = new Scanner(System.in);
 		// singleton 객체 호출.
 		BookMain mainApp1 = BookMain.getInstance();
-		BookMain mainApp2 = BookMain.getInstance();
+//		BookMain mainApp2 = BookMain.getInstance();
 
 //		mainApp1.add(); // 1번에 등록.
 //		mainApp1.list();
@@ -26,12 +26,13 @@ public class BookApp {
 		// login성공 했을 경우에만 1번) main메소드를 실행하도록 한다
 		
 		mainApp1.bookUser();
-		System.out.print("아이디 입력>> ");
-		String id = scn.nextLine();
-
-		System.out.print("비밀번호 입력>> ");
-		String pwd = scn.nextLine();
-
-		mainApp1.login(id, pwd); // 정상작동
+//		System.out.print("아이디 입력>> ");
+//		String id = scn.nextLine();
+//
+//		System.out.print("비밀번호 입력>> ");
+//		String pwd = scn.nextLine();	
+//
+//		mainApp1.login(id, pwd); // 정상작동
+		mainApp1.main(args);
 	}
 }
