@@ -14,6 +14,24 @@ public class Member {
 		this.name = name;
 		this.score = score;
 	}
+	
+	// Set컬렉션의 중복된 값으로 지정.
+	// name, score => hashCode + equals => 동일한 값
+	@Override
+	public int hashCode() {
+
+		return score;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Member) {
+			Member target = (Member) obj;
+			return this.name.equals(target.name);
+		}
+		return false;
+	}
+	
+		
 	// 클래스 : 메소드(기능) = 반환값 메소드명 (매개값)
 	public void showInfo() {
 		System.out.println("이름은 " + name + ", 점수는 " + score);
@@ -32,6 +50,15 @@ public class Member {
 		this.name = name;
 		
 	}
+	
+	// toString 재정의
+	public String toString() {
+		return "이름: " + name + ", 점수: " + score;
+	}
+	
+	
+	
+	
 	// score 필드의 값을 지정
 	public void setScore(int score) {
 		if(score < 0 || score > 100) {

@@ -1,5 +1,6 @@
 package com.yedam.classes;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class MethodMain {
@@ -27,17 +28,15 @@ public class MethodMain {
 				System.out.println("============================");
 				Product prd = new Product();
 				prd.setProductName("ALL");
-				Product[] listing = m2.productList(prd);
-				for (int i = 0; i < listing.length; i++) {
-					if(listing[i]!=null)
-					System.out.println(listing[i].showList());
+				List<Product> listing = m2.productList(prd);
+				for (int i = 0; i < listing.size(); i++) {
+					System.out.println(listing.get(i).showList());
 				}
 				break;
-
 			case 2: // 추가
 				Product prdAdd = new Product();
 				prdAdd.setProductName("ALL");
-				Product[] listAdd = m2.productList(prdAdd);
+				List<Product> listAdd = m2.productList(prdAdd);
 				System.out.print("상품코드를 입력해주세요>> ");
 				String code = scn.nextLine();
 				
@@ -46,8 +45,8 @@ public class MethodMain {
 					break;
 				} else {
 					boolean addRun = false;
-					for (int i = 0; i < listAdd.length; i++) {
-						if (listAdd[i] != null && listAdd[i].getProductCode().equals(code)) {
+					for (int i = 0; i < listAdd.size(); i++) {
+						if (listAdd.get(i).getProductCode().equals(code)) {
 							System.out.println("중복된 상품코드 제목입니다.");
 							addRun = true;
 							break; // for문 종료 break
@@ -104,11 +103,9 @@ public class MethodMain {
 				search.setProductName(searchName); // 상품코드, 상품명, 가격
 				search.setPrice(searchPrice);
 
-				Product[] list = m2.productList(search); //
-				for (int i = 0; i < list.length; i++) { // list 배열 for문으로 반환
-					if (list[i] != null) {
-						System.out.println(list[i].showList());
-					}
+				List<Product> list = m2.productList(search); //
+				for (int i = 0; i < list.size(); i++) { // list 배열 for문으로 반환
+						System.out.println(list.get(i).showList());
 				}
 				break;
 
@@ -168,11 +165,9 @@ public class MethodMain {
 		search.setProductName("지우개"); // 상품코드, 상품명, 가격
 		search.setPrice(700);
 
-		Product[] list = m2.productList(search); //
-		for (int i = 0; i < list.length; i++) { // list 배열 for문으로 반환
-			if (list[i] != null) {
-				System.out.println(list[i].showList());
-			}
+		List<Product> list = m2.productList(search); //
+		for (int i = 0; i < list.size(); i++) { // list 배열 for문으로 반환
+				System.out.println(list.get(i).showList());
 		}
 	}
 
