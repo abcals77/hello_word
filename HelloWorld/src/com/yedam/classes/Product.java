@@ -1,10 +1,12 @@
 package com.yedam.classes;
 
+import java.io.Serializable;
+
 /*
  * 상품코드, 상품명, 가격
  */
 
-public class Product {
+public class Product implements Serializable {
 	private String productCode;
 	private String productName;
 	private int price;
@@ -12,7 +14,7 @@ public class Product {
 	Product() {
 	}
 
-	Product(String pc, String pn, int price) {
+	public Product(String pc, String pn, int price) {
 		productCode = pc;
 		productName = pn;
 		this.price = price;

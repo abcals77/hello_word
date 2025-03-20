@@ -1,7 +1,17 @@
 package com.yedam.classes;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 public class MethodExe2 {
 
@@ -9,14 +19,74 @@ public class MethodExe2 {
 
 	// 생성자
 	MethodExe2() {
-		store = new ArrayList<Product>(); // new Product[10];
-		store.add(new Product("A001", "지우개", 500));
-		store.add(new Product("B001", "샤프", 1000));
-		store.add(new Product("C001", "연필", 600));
-		store.add(new Product("C002", "지우개", 1000));
-		store.add(new Product("D001", "볼펜", 1500));
+		init1();
+	}
+	
+	void init() {
+		store = new ArrayList<Product>();
+		try {
+			Scanner scn = new Scanner(new FileInputStream("c:/temp/message.txt"));
+			while(true) {
+				String msg = scn.nextLine();
+				String[] msgAry = msg.split(" ");
+				store.add(new Product(msgAry[0], msgAry[1], Integer.parseInt(msgAry[2])));
+			}
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch(NoSuchElementException e) {
+			
+		}
+		// 초기화 끝.
+	}
+	void init1() {
+		try {
+			FileInputStream fis = new FileInputStream("c:/temp/object.dat");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			store = (List<Product>) ois.readObject(); // Object객체를 List로 casting(형변환)
+			ois.close();
+			fis.close();
+		} catch (Exception e) {
+//			e.printStackTrace();
+		}
+			
 	}
 
+
+	// 종료시점에 store 정보를 message.txt에 저장.
+//	void save1() {
+//		try {
+//			Writer writer = new FileWriter("c:/temp/message.txt");
+//			for(int i = 0; i < store.size(); i++) {
+//				
+//				writer.write(store.get(i).getProductCode() + " "
+//						+ store.get(i).getProductName() + " "
+//						+ store.get(i).getPrice() + "\n");
+//				writer.flush();
+//				
+//			}
+//			writer.close();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		
+//	}
+
+	void save() {
+			try {
+				FileOutputStream fos = new FileOutputStream("c:/temp/object.dat");
+				ObjectOutputStream oos = new ObjectOutputStream(fos);
+				oos.writeObject(store); // ArrayList<Product>() 객체 상태로 저장
+				oos.flush();
+				oos.close();
+				fos.close();
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			} 
+	}
+
+	
 	// 메소드.
 	boolean add(Product prd) {
 		boolean result = store.add(prd); // 추가가 되면 result는 참(true)

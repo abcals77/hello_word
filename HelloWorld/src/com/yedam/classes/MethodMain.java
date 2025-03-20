@@ -6,8 +6,11 @@ import java.util.Scanner;
 public class MethodMain {
 
 	public static void main(String[] args) {
+		
+		
+		
 		officeApp();
-
+		System.out.println("end of prog");
 	} // end of main
 
 	static void officeApp() {
@@ -61,7 +64,7 @@ public class MethodMain {
 				String name = scn.nextLine();
 				System.out.print("가격을 입력해주세요>> ");
 				int price = Integer.parseInt(scn.nextLine());
-
+				
 				if (m2.add(new Product(code, name, price))) { // 잘 등록되면 true 등록되지 못하면 false
 					System.out.println("등록완료");
 				}
@@ -112,13 +115,13 @@ public class MethodMain {
 			case 9: // 종료
 				System.out.println("프로그램을 종료합니다.");
 				run = false;
+				m2.save();
 				break;
 			default:
 				System.out.println("메뉴를 다시 선택하세요.");
 			}
 
 		}
-		System.out.println("end of prog.");
 	}
 
 	void method1() {

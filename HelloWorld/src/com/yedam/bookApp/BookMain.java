@@ -23,9 +23,9 @@ public class BookMain {
 
 	// 저장공간.
 //	Book[] bookStore = new Book[100];
-	User[] members = { new User("aaa", "홍길동", "aaa")//
-			, new User("user02", "김민규", "2222")//
-			, new User("user03", "김민식", "3333") };
+//	User[] members = { new User("aaa", "홍길동", "aaa")//
+//			, new User("user02", "김민규", "2222")//
+//			, new User("user03", "김민식", "3333") };
 
 	// 스캐너 객체선언.
 	Scanner scn = new Scanner(System.in);
@@ -33,14 +33,16 @@ public class BookMain {
 	BookJdbc dao = new BookJdbc();
 
 	// 아이디, 비밀번호 입력.
-	private boolean login(String id, String pw) {
-		for (int i = 0; i < members.length; i++) {
-			if (members[i].getUserId().equals(id) //
-					&& members[i].getPassword().equals(pw)) {
-				return true;
-			}
-		}
-		return false;
+	private User login(String id, String pw) {
+		MemberJdbc dao = new MemberJdbc();
+		return dao.login(id, pw);
+		//		for (int i = 0; i < members.length; i++) {
+//			if (members[i].getUserId().equals(id) //
+//					&& members[i].getPassword().equals(pw)) {
+//				return true;
+//			}
+//		}
+//		return false;
 	}
 
 	// 순번생성.
@@ -211,9 +213,10 @@ public class BookMain {
 			String id = scn.nextLine();
 			System.out.println("password입력>> ");
 			String pw = scn.nextLine();
-
-			if (login(id, pw)) {
-				System.out.println("정상");
+			// User 클래스, Map 컬렉션.
+			User user = login(id, pw);
+			if (user != null) {
+				System.out.println(user.getUserName() + ", 환영합니다.");
 				break;
 			}
 			// id, password 비정상.
