@@ -22,6 +22,10 @@ public class FileExe {
 			fw.write("World\n");
 			fw.flush();
 			fw.close();
+			if(file.exists()) {
+				file.delete();
+				System.out.println("deleted.");
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
