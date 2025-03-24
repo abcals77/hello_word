@@ -100,22 +100,30 @@ public class BoardMain {
 				while (true) {
 					System.out.println("상세보기 게시물을 선택해주세요.(0입력 시 뒤로가기)");
 					System.out.print("일련번호 입력 >>");
-					int serial = scn.nextInt();
-					if (serial == 0) {
-						System.out.println("0 입력");
-						myPage(id, pw);
-						break;
-					}
+					int serial;
+					try {
+				        serial = Integer.parseInt(scn.nextLine().trim());
+				    } catch (NumberFormatException e) {
+				        System.out.println("올바른 일련번호를 입력해주세요.");
+				        continue; // 다시 반복문 시작
+				    }
+
+				    if (serial == 0) {
+				        System.out.println("뒤로 돌아갑니다.");
+				        myPage(id, pw);
+				        break;  // 반복문 종료
+				    } 
+
 					boolean myContentRun = true;
 					myBoardContents(id, pw, serial, member.getUserSerial()); // boardSerial, 입력값
-
 					while (myContentRun) {
-						System.out.println("1. 게시글 삭제 / 2. 게시글 수정 / 9. 뒤로가기");
-						System.out.print("선택 >> ");
-						int boardMenu = 9;
+						int boardMenu;
+						System.out.println("1. 게시글 삭제 / 2. 게시글 수정 / 9. 뒤로가기");						
 						while (true) {
+							System.out.print("선택 >> ");
+							String input =scn.nextLine();
 							try {
-								boardMenu = Integer.parseInt(scn.nextLine());
+								boardMenu = Integer.parseInt(input.trim());
 								break;
 							} catch (NumberFormatException e) {
 								System.out.println("정수값을 입력하세요.");
@@ -197,11 +205,11 @@ public class BoardMain {
 		while (true) {
 			System.out.println("\"" + serial + "\" 해당 게시물을 삭제하겠습니까? (Y/N)");
 			String deleteYN = scn.nextLine();
-			if (deleteYN.equals("Y")) {
+			if (deleteYN.equals("Y") || deleteYN.equals("y")) {
 				dao.myBoardContentDelete(serial, userSerial);
 				System.out.println("일련번호 : " + serial + " 게시물이 삭제되었습니다.");
 				break;
-			} else if (deleteYN.equals("N")) {
+			} else if (deleteYN.equals("N") || deleteYN.equals("n")) {
 				System.out.println("삭제 취소되었습니다.");
 				break;
 			}
@@ -216,7 +224,7 @@ public class BoardMain {
 		System.out.print("입력 >> ");
 		String boardContent = scn.nextLine();
 		
-		Board board = new board();
+//		Board board = new board();
 		
 		
 	}
