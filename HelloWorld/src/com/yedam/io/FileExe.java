@@ -17,7 +17,7 @@ public class FileExe {
 				file1.mkdirs();
 				System.out.println("폴더생성됨");
 			}
-			FileWriter fw = new FileWriter(file);
+			FileWriter fw = new FileWriter(file); // 파일 객체를 입출력스트림의 매개값으로 사용 
 			fw.write("Hello\n");
 			fw.write("World\n");
 			fw.flush();
