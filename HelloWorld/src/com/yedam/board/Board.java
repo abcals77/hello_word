@@ -25,6 +25,11 @@ public class Board {
 		return boardSerial + " / " + boardTitle + " / " + boardDate;
 	}
 	
+	public String boardShow() {
+		return "게시물 번호 : " + boardSerial +  " / 게시물 제목 : " + boardTitle + " / 작성자 : 홍길동" + " / 등록일 : " + boardDate + " \n내용 : " + boardContents;
+	}
+	
+	
 	public String showMyBoard() {
 		return "제목 : " + boardTitle + " / 등록일 : " +  boardDate + "\n내용 : " + boardContents ;
 	}

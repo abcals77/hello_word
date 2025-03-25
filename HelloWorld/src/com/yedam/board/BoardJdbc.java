@@ -35,14 +35,14 @@ public class BoardJdbc {
 			psmt.setInt(1, serial);
 			ResultSet rs = psmt.executeQuery();
 			while (rs.next()) {
-				Board Board = new Board();
-				Board.setBoardSerial(rs.getInt("board_serial"));
-				Board.setUserSerial(rs.getInt("user_serial"));
-				Board.setBoardTitle(rs.getString("board_title"));
-				Board.setBoardContents(rs.getString("board_contents"));
-				Board.setBoardDate(rs.getString("board_date"));
-				Board.setBoardUpDate(rs.getString("board_up_date"));
-				list.add(Board);
+				Board board = new Board();
+				board.setBoardSerial(rs.getInt("board_serial"));
+				board.setUserSerial(rs.getInt("user_serial"));
+				board.setBoardTitle(rs.getString("board_title"));
+				board.setBoardContents(rs.getString("board_contents"));
+				board.setBoardDate(rs.getString("board_date"));
+				board.setBoardUpDate(rs.getString("board_up_date"));
+				list.add(board);
 
 			}
 		} catch (SQLException e) {
@@ -119,4 +119,73 @@ public class BoardJdbc {
 		}
 		return false;
 	}
+
+	public List<Board> tbBoard(){
+		List<Board> list = new ArrayList<Board>();
+		Connection conn = getConnect();
+		String sql = "select * from tb_board where board_status = 1 order by board_serial";
+		try {
+			PreparedStatement psmt = conn.prepareStatement(sql);
+			ResultSet rs = psmt.executeQuery();
+			while (rs.next()) {
+				Board board = new Board();
+				board.setBoardSerial(rs.getInt("board_serial"));
+				board.setUserSerial(rs.getInt("user_serial"));
+				board.setBoardTitle(rs.getString("board_title"));
+				board.setBoardContents(rs.getString("board_contents"));
+				board.setBoardDate(rs.getString("board_date"));
+				board.setBoardUpDate(rs.getString("board_up_date"));
+				list.add(board);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	public Board boardContent(int serial) {
+		Connection conn = getConnect();
+		String sql = "select * from tb_board where board_serial = ? and board_status = 1";
+		try {
+			PreparedStatement psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, serial);
+
+			ResultSet rs = psmt.executeQuery();
+			if (rs.next()) {
+				Board board = new Board();
+				board.setBoardSerial(rs.getInt("board_serial"));
+				board.setUserSerial(rs.getInt("user_serial"));
+				board.setBoardTitle(rs.getString("board_title"));
+				board.setBoardContents(rs.getString("board_contents"));
+				board.setBoardDate(rs.getString("board_date"));
+				board.setBoardUpDate(rs.getString("board_up_date"));
+
+				return board;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+
+	public boolean boardLike(int boardSerial, int userSerial) {
+		Connection conn = getConnect();
+		String sql = "insert into tb_board_like(board_serial, user_serial, board_like_date) values(?, ?, sysdate)";
+		try {
+			PreparedStatement psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, boardSerial);
+			psmt.setInt(2, userSerial);
+
+			int r = psmt.executeUpdate();
+			if (r > 0) {
+				return true;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 }

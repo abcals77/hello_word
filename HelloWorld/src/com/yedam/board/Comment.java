@@ -4,12 +4,36 @@ public class Comment {
 	private int commentSerial;
 	private int boardSerial;
 	private String commentContents;
-	private int user_serial;
+	private int userSerial;
 	private String commentDate;
 	private int commentStatus;
-	
-	public Comment() {}
 
+	public Comment() {
+	}
+
+	public Comment(int commentSerial, int boardSerial, String commentContents, int userSerial, String commentDate,
+			int commentStatus) {
+		this.commentSerial = commentSerial;
+		this.boardSerial = boardSerial;
+		this.commentContents = commentContents;
+		this.userSerial = userSerial;
+		this.commentDate = commentDate;
+		this.commentStatus = commentStatus;
+	}
+	public Comment(int boardSerial, String commentContents, int userSerial) {
+		this.boardSerial = boardSerial;
+		this.commentContents = commentContents;
+		this.userSerial = userSerial;
+	}
+
+	public String myCommentListShow() {
+		return "댓글 번호 : " + commentSerial + " / 게시물 번호 : "+ boardSerial + " / 등록일 : " + commentDate + "\n내용 : " + commentContents;
+	}
+	public String boardCommentShow() {
+		return "댓글 번호 : " + commentSerial + " / 등록일 : " + commentDate + "\n내용 : " + commentContents;
+	}
+	
+	
 	public int getCommentSerial() {
 		return commentSerial;
 	}
@@ -34,12 +58,12 @@ public class Comment {
 		this.commentContents = commentContents;
 	}
 
-	public int getUser_serial() {
-		return user_serial;
+	public int getUserSerial() {
+		return userSerial;
 	}
 
-	public void setUser_serial(int user_serial) {
-		this.user_serial = user_serial;
+	public void setUserSerial(int userSerial) {
+		this.userSerial = userSerial;
 	}
 
 	public String getCommentDate() {
