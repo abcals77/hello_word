@@ -25,86 +25,86 @@ public class BoardMain {
 	}
 
 	static Scanner scn = new Scanner(System.in);
+	
+	private static int inputInt() {
+	    while (true) {
+	        try {
+	            return Integer.parseInt(scn.nextLine().trim());
+	        } catch (NumberFormatException e) {
+	            System.out.println("정수값을 입력하세요.");
+	        }
+	    }
+	}
 
 	public static void main(String[] args) {
-		
-		boolean start = true;
-		while(start) {
-			System.out.println("1. 회원가입 / 2. 로그인 / 9. 종료");
-			System.out.print("선택 >> ");
-			int smenu = 0;
-			while (true) {
-				try {
-					smenu = Integer.parseInt(scn.nextLine());
-					break;
-				} catch (NumberFormatException e) {
-					System.out.println("정수값을 입력하세요.");
-				}
-			}
-			switch(smenu) {
-			case 1:
-				sign();
-				break;
-			case 2:
-				System.out.println("id입력>> ");
-				id = scn.nextLine();
-				System.out.println("password입력>> ");
-				pw = scn.nextLine();
-				start = false;
-				break;
-			case 9:
-				System.out.println("프로그램을 종료합니다.");
-				return;
-			default:
-				System.out.println("올바른 값을 입력해주세요.");
-			}
-		}
+	    boolean start = true;
+	    
+	    while (start) {
+	        System.out.println("======================================");
+	        System.out.println("1. 회원가입 / 2. 로그인 / 9. 종료");
+	        System.out.print("선택 >> ");
+	        int smenu = inputInt();
 
-//		id = "user01";
-//		pw = "user01";
+	        switch (smenu) {
+	            case 1:
+	                sign();
+	                break;
+	            case 2:
+	                System.out.println("id입력>> ");
+	                id = scn.nextLine();
+	                System.out.println("password입력>> ");
+	                pw = scn.nextLine();
 
-		while (true) {
-			Member member = login(id, pw);
-			if (member != null) {
-				System.out.println(member.getUserName() + ", 환영합니다.");
-				break;
-			}
-			System.out.println("id와 password를 확인하세요");
-			main(args);
-		}
-		boolean run = true;
-		while (run) {
-			System.out.println("1. 마이페이지 / 2. 게시판 / 9. 종료");
-			System.out.print("선택 >> ");
-			int menu = 9;
-			while (true) {
-				try {
-					menu = Integer.parseInt(scn.nextLine());
-					break;
-				} catch (NumberFormatException e) {
-					System.out.println("정수값을 입력하세요.");
-				}
-			}
+	                Member member = login(id, pw);
+	                if (member == null) {
+	                    System.out.println("id와 password를 확인하세요");
+	                    continue; // 로그인 실패하면 다시 로그인 메뉴로
+	                }
+	                System.out.println(member.getUserName() + ", 환영합니다.");
 
-			switch (menu) {
-			case 1:
-				myPage(id, pw);
+	                // 로그인 후 메뉴 실행
+	                boolean isLoggedIn = true;
+	                while (isLoggedIn) {
+	                    System.out.println("======================================");
+	                    System.out.println("1. 마이페이지 / 2. 게시판 / 9. 로그아웃");
+	                    System.out.print("선택 >> ");
+	                    int menu = inputInt();
 
-				break;
-			case 2:
-				tbBoard();
-				break;
+	                    switch (menu) {
+	                        case 1:
+	                        	if(myPage(id, pw)) {  // 로그아웃 했으면 true 반환
+	                                System.out.println("로그아웃 되었습니다.");
+	                                id = "";
+	                                pw = "";
+	                                isLoggedIn = false;  // main에서도 로그아웃 상태 처리
+	                            }
+	                            break;
+	                        case 2:
+	                            tbBoard();
+	                            break;
+	                        case 9:
+	                            System.out.println(member.getUserName() + "님이 로그아웃 하였습니다.");
+	                            id = "";
+	                            pw = "";
+	                            isLoggedIn = false; // 로그인 상태 종료 (로그아웃)
+	                            break;
+	                        default:
+	                            System.out.println("메뉴를 다시 선택하세요");
+	                    }
+	                }
+	                break; // 로그인 메뉴(메인메뉴)로 돌아감
 
-			case 9:
-				System.out.println("프로그램을 종료합니다.");
-				run = false;
-				break;
-			default:
-				System.out.println("메뉴를 다시 선택하세요");
-			}
-		}
-		System.out.println("end of prog.");
-	} // end of main
+	            case 9:
+	                System.out.println("프로그램을 종료합니다.");
+	                start = false;
+	                break;
+
+	            default:
+	                System.out.println("올바른 값을 입력해주세요.");
+	        }
+	    }
+	    System.out.println("end of prog.");
+	}
 
 	//회원가입, 로그인, 탈퇴
 	private static Member login(String id, String pw) {
@@ -284,9 +284,10 @@ public class BoardMain {
 			}
 		}
 	}
-	private static void myPage(String id, String pw) {
+	private static boolean myPage(String id, String pw) {
 		boolean run = true;
-		while (run) {			
+		while (run) {
+			System.out.println("======================================");
 			System.out.println("1. 내 정보 확인 / 2. 내 작성글 확인 / 3. 내 댓글 확인 / 4. 좋아요 게시물 / 5. 로그아웃 / 6. 회원탈퇴 / 9. 돌아가기");
 			System.out.println("선택 >> ");
 			int menu = 9;
@@ -331,6 +332,7 @@ public class BoardMain {
 					while (myContentRun) {
 						
 						int boardMenu;
+						System.out.println("======================================");
 						System.out.println("1. 게시글 삭제 / 2. 게시글 수정 / 3. 댓글쓰기 / 9. 뒤로가기");						
 						while (true) {
 							System.out.print("선택 >> ");
@@ -453,25 +455,21 @@ public class BoardMain {
 				
 				break;
 			case 5: // 로그아웃
-				System.out.println(member.getUserName() + "님이 로그아웃 하였습니다.");
-				id = "";
-				pw = "";
-				scn.nextLine();
-				main(null);
+                return true; // 로그아웃 신호 main에 전달
 			case 6: // 회원탈퇴
 				memberDelete(member.getUserId(),member.getUserPw());
-				scn.nextLine();
 				break;
 			case 9:
 				System.out.println("돌아가기");
 				run = false;
-				return;
+				break;
 			default:
 				System.out.println("메뉴를 다시 선택하세요");
 			}
 		
 		}
 		System.out.println("마이페이지 종료");
+		return false; // 로그아웃 안함
 	}
 	// myPage 영역 시작
 		// 내 정보
@@ -647,6 +645,7 @@ public class BoardMain {
 			if(stopValues == 1) {
 				break;
 			}
+			System.out.println("======================================");
 			System.out.println("1. 게시물 상세보기 / 2. 글쓰기 / 9. 뒤로가기");
 			System.out.print("선택 >> ");
 			int menu = 9;
@@ -685,6 +684,7 @@ public class BoardMain {
 					while (contentRun) {
 						
 						int contentMenu;
+						System.out.println("======================================");
 						System.out.println("1. 댓글쓰기 / 2. 좋아요 / 0. 뒤로가기");						
 						while (true) {
 							System.out.print("선택 >> ");
