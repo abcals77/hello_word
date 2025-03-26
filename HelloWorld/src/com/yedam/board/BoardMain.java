@@ -1,6 +1,5 @@
 package com.yedam.board;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -11,10 +10,10 @@ public class BoardMain {
 	static BoardJdbc boardDao = new BoardJdbc();
 	static MemberJdbc memberDao = new MemberJdbc();
 	static CommentJdbc commentDao = new CommentJdbc();
-	
+
 	static String id;
 	static String pw;
-	
+
 	private static BoardMain instance = new BoardMain();
 
 	private BoardMain() {
@@ -24,115 +23,119 @@ public class BoardMain {
 		return instance;
 	}
 
+	public void start() {
+		boolean start = true;
+
+		while (start) {
+			System.out.println("======================================");
+			System.out.println("1. 회원가입 / 2. 로그인 / 9. 종료");
+			System.out.print("선택 >> ");
+			int smenu = inputInt();
+
+			switch (smenu) {
+			case 1:
+				MemberService.sign();
+				break;
+			case 2:
+				System.out.println("id입력>> ");
+				id = scn.nextLine();
+				System.out.println("password입력>> ");
+				pw = scn.nextLine();
+
+				Member member = login(id, pw);
+				if (member == null) {
+					System.out.println("id와 password를 확인하세요");
+					continue; // 로그인 실패하면 다시 로그인 메뉴로
+				}
+				System.out.println(member.getUserName() + ", 환영합니다.");
+
+				// 로그인 후 메뉴 실행
+				boolean isLoggedIn = true;
+				while (isLoggedIn) {
+					System.out.println("======================================");
+					System.out.println("1. 마이페이지 / 2. 게시판 / 9. 로그아웃");
+					System.out.print("선택 >> ");
+					int menu = inputInt();
+
+					switch (menu) {
+					case 1:
+						if (myPage(id, pw)) { // 로그아웃 했으면 true 반환
+							System.out.println("로그아웃 되었습니다.");
+							id = "";
+							pw = "";
+							isLoggedIn = false; // main에서도 로그아웃 상태 처리
+						}
+						break;
+					case 2:
+						tbBoard();
+						break;
+					case 9:
+						System.out.println(member.getUserName() + "님이 로그아웃 하였습니다.");
+						id = "";
+						pw = "";
+						isLoggedIn = false; // 로그인 상태 종료 (로그아웃)
+						break;
+					default:
+						System.out.println("메뉴를 다시 선택하세요");
+					}
+				}
+				break; // 로그인 메뉴(메인메뉴)로 돌아감
+
+			case 9:
+				System.out.println("프로그램을 종료합니다.");
+				start = false;
+				break;
+
+			default:
+				System.out.println("올바른 값을 입력해주세요.");
+			}
+		}
+		System.out.println("end of prog.");
+	}
+
 	static Scanner scn = new Scanner(System.in);
-	
-	private static int inputInt() {
-	    while (true) {
-	        try {
-	            return Integer.parseInt(scn.nextLine().trim());
-	        } catch (NumberFormatException e) {
-	            System.out.println("정수값을 입력하세요.");
-	        }
-	    }
+
+	private int inputInt() {
+		while (true) {
+			try {
+				return Integer.parseInt(scn.nextLine().trim());
+			} catch (NumberFormatException e) {
+				System.out.println("정수값을 입력하세요.");
+			}
+		}
 	}
 
 	public static void main(String[] args) {
-	    boolean start = true;
-	    
-	    while (start) {
-	        System.out.println("======================================");
-	        System.out.println("1. 회원가입 / 2. 로그인 / 9. 종료");
-	        System.out.print("선택 >> ");
-	        int smenu = inputInt();
-
-	        switch (smenu) {
-	            case 1:
-	                sign();
-	                break;
-	            case 2:
-	                System.out.println("id입력>> ");
-	                id = scn.nextLine();
-	                System.out.println("password입력>> ");
-	                pw = scn.nextLine();
-
-	                Member member = login(id, pw);
-	                if (member == null) {
-	                    System.out.println("id와 password를 확인하세요");
-	                    continue; // 로그인 실패하면 다시 로그인 메뉴로
-	                }
-	                System.out.println(member.getUserName() + ", 환영합니다.");
-
-	                // 로그인 후 메뉴 실행
-	                boolean isLoggedIn = true;
-	                while (isLoggedIn) {
-	                    System.out.println("======================================");
-	                    System.out.println("1. 마이페이지 / 2. 게시판 / 9. 로그아웃");
-	                    System.out.print("선택 >> ");
-	                    int menu = inputInt();
-
-	                    switch (menu) {
-	                        case 1:
-	                        	if(myPage(id, pw)) {  // 로그아웃 했으면 true 반환
-	                                System.out.println("로그아웃 되었습니다.");
-	                                id = "";
-	                                pw = "";
-	                                isLoggedIn = false;  // main에서도 로그아웃 상태 처리
-	                            }
-	                            break;
-	                        case 2:
-	                            tbBoard();
-	                            break;
-	                        case 9:
-	                            System.out.println(member.getUserName() + "님이 로그아웃 하였습니다.");
-	                            id = "";
-	                            pw = "";
-	                            isLoggedIn = false; // 로그인 상태 종료 (로그아웃)
-	                            break;
-	                        default:
-	                            System.out.println("메뉴를 다시 선택하세요");
-	                    }
-	                }
-	                break; // 로그인 메뉴(메인메뉴)로 돌아감
-
-	            case 9:
-	                System.out.println("프로그램을 종료합니다.");
-	                start = false;
-	                break;
-
-	            default:
-	                System.out.println("올바른 값을 입력해주세요.");
-	        }
-	    }
-	    System.out.println("end of prog.");
+		BoardMain.getInstance().start();
 	}
 
-	//회원가입, 로그인, 탈퇴
-	private static Member login(String id, String pw) {
+	// 회원가입, 로그인, 탈퇴
+	private Member login(String id, String pw) {
 		return memberDao.login(id, pw);
 	}
 
-	private static void memberDelete(String userId, String userPw) {
+	private void memberDelete(String userId, String userPw) {
 		System.out.println("==================");
 		System.out.println("회원탈퇴");
 		System.out.println("==================");
 
 		boolean register = false;
 
-		while(!register){
-				System.out.println("회원탈퇴를 진행 하시겠습니까?\nY:진행 N:취소");
-				System.out.print("입력 >> ");
-				String yn = scn.nextLine();
-	
-			if(yn.equalsIgnoreCase("y")){ // 대소 구분 X
+		while (!register) {
+			System.out.println("회원탈퇴를 진행 하시겠습니까?\nY:진행 N:취소");
+			System.out.print("입력 >> ");
+			String yn = scn.nextLine();
+
+			if (yn.equalsIgnoreCase("y")) { // 대소 구분 X
 				System.out.println("==================");
 				System.out.println("회원탈퇴가 진행됩니다.");
 				System.out.println("==================");
-			}else if(yn.equalsIgnoreCase("n")){
+			} else if (yn.equalsIgnoreCase("n")) {
 				System.out.println("==================");
 				System.out.println("회원탈퇴를 종료합니다.");
 				System.out.println("==================");
 				return;
-			}else{
+			} else {
 				System.out.println("==================");
 				System.out.println("Y 또는 N만 입력해주세요.");
 				System.out.println("==================");
@@ -143,148 +146,32 @@ public class BoardMain {
 			System.out.println("비밀번호를 입력해주세요.");
 			System.out.print("입력 >> ");
 			String upw = scn.nextLine();
-			if(uid.isBlank() || upw.isBlank()) {
+			if (uid.isBlank() || upw.isBlank()) {
 				System.out.println("========================");
 				System.out.println("아이디 또는 비밀번호가 공백입니다.");
 				System.out.println("회원탈퇴를 취소합니다.");
 				System.out.println("========================");
 				return;
 			}
-			if(uid.equals(userId) && upw.equals(userPw)) {
-				if(memberDao.memberDelete(uid, upw)) {
+			if (uid.equals(userId) && upw.equals(userPw)) {
+				if (memberDao.memberDelete(uid, upw)) {
 					System.out.println("회원탈퇴 되었습니다.");
 					id = "";
 					pw = "";
 					main(null);
 					return;
 				}
-			}else {
+			} else {
 				System.out.println("아이디 또는 비밀번호가 일치하지 않습니다.");
 				System.out.println("회원탈퇴를 취소합니다.");
 				return;
 			}
-			
-			
-			
-			
+
 		}
-		
-		
+
 	}
-	
-	
-	
-	private static void sign() {
-		System.out.println("==================");
-		System.out.println("회원등록");
-		System.out.println("==================");
 
-		boolean register = false;
-
-		while(!register){
-				System.out.println("회원가입을 하시겠습니까?\nY:진행 N:취소");
-				System.out.print("입력 >> ");
-				String yn = scn.nextLine();
-	
-			if(yn.equalsIgnoreCase("y")){ // 대소 구분 X
-				System.out.println("==================");
-				System.out.println("회원가입이 진행됩니다.");
-				System.out.println("==================");
-			}else if(yn.equalsIgnoreCase("n")){
-				System.out.println("==================");
-				System.out.println("회원가입을 종료합니다.");
-				System.out.println("==================");
-				return;
-			}else{
-				System.out.println("==================");
-				System.out.println("Y 또는 N만 입력해주세요.");
-				System.out.println("==================");
-			}
-			Member member = new Member();
-	
-			while(true){
-				
-				String userId = "";
-				boolean idCk = true;
-				while(idCk) {
-					List<Member> list = memberDao.memberList();
-					System.out.print("ID : ");
-					userId = scn.nextLine();
-					if(userId.isBlank()) {
-						System.out.println("아이디를 입력해주세요.");
-						continue;
-					}
-					boolean exit = false;
-					for (Member memberCk : list) {
-						if (memberCk.getUserId().equals(userId)) {
-							System.out.println("중복된 아이디입니다. 다시 입력해주세요.");
-							exit = true;
-						}
-					}
-					if(!exit) {
-						idCk = false;
-					}
-					
-				}
-
-				String userPw = "";
-				while(true){
-					System.out.print("PW : ");
-					userPw = scn.nextLine();
-					System.out.print("PW 확인 : ");
-					String passwordConfirm = scn.nextLine();
-					if(userPw.isBlank()) {
-						System.out.println("비밀번호를 입력해주세요.");
-						continue;
-					}
-					if(userPw.equals(passwordConfirm)){
-						break;
-					}else{
-						System.out.println("==================");
-						System.out.println("패스워드를 확인해주세요");
-						System.out.println("==================");
-					}
-				}
-				String name = "";
-				while(true) {
-					System.out.print("닉네임 : ");
-					name = scn.nextLine();
-					if(name.isBlank()) {
-						System.out.println("닉네임을 입력해주세요.");
-					}else {
-						break;
-					}
-				}
-				String email = "";
-				while(true) {
-					System.out.print("이메일을 입력해주세요 : ");
-					email = scn.nextLine();
-					if(email.isBlank()) {
-						System.out.println("이메일을 입력해주세요.");
-					}else {
-						break;
-					}
-				}
-				
-				member.setUserId(userId);
-				member.setUserPw(userPw);
-				member.setUserName(name);
-				member.setUserEmail(email);
-				
-				if(memberDao.memberSignUp(member)){
-					System.out.println("==================");
-					System.out.println(member.getUserName()+"님 회원가입 되었습니다.");
-					System.out.println("로그인 페이지에서 로그인을 진행해주세요.");
-					System.out.println("==================");
-					return;
-				}else {
-					System.out.println("회원가입 실패");
-				}
-				break;
-			}
-		}
-	}
-	private static boolean myPage(String id, String pw) {
+	private boolean myPage(String id, String pw) {
 		boolean run = true;
 		while (run) {
 			System.out.println("======================================");
@@ -313,30 +200,30 @@ public class BoardMain {
 					System.out.print("일련번호 입력 >>");
 					int serial;
 					try {
-				        serial = Integer.parseInt(scn.nextLine().trim());
-				    } catch (NumberFormatException e) {
-				        System.out.println("올바른 일련번호를 입력해주세요.");
-				        continue; // 다시 반복문 시작
-				    }
+						serial = Integer.parseInt(scn.nextLine().trim());
+					} catch (NumberFormatException e) {
+						System.out.println("올바른 일련번호를 입력해주세요.");
+						continue; // 다시 반복문 시작
+					}
 
-				    if (serial == 0) {
-				        System.out.println("뒤로 돌아갑니다.");
-				        break;  // 반복문 종료
-				    } 
-					
+					if (serial == 0) {
+						System.out.println("뒤로 돌아갑니다.");
+						break; // 반복문 종료
+					}
+
 					myBoardContents(id, pw, serial, member.getUserSerial()); // boardSerial, 입력값
-					if(returnValues == 1) {
+					if (returnValues == 1) {
 						continue;
 					}
 					boolean myContentRun = true;
 					while (myContentRun) {
-						
+
 						int boardMenu;
 						System.out.println("======================================");
-						System.out.println("1. 게시글 삭제 / 2. 게시글 수정 / 3. 댓글쓰기 / 9. 뒤로가기");						
+						System.out.println("1. 게시글 삭제 / 2. 게시글 수정 / 3. 댓글쓰기 / 9. 뒤로가기");
 						while (true) {
 							System.out.print("선택 >> ");
-							String input =scn.nextLine();
+							String input = scn.nextLine();
 							try {
 								boardMenu = Integer.parseInt(input.trim());
 								break;
@@ -352,7 +239,7 @@ public class BoardMain {
 							break;
 						case 2:
 							myBoardUpdate(serial, member.getUserSerial());
-							if(returnValues == 1) {
+							if (returnValues == 1) {
 								myBoardContents(id, pw, serial, member.getUserSerial());
 							}
 							break;
@@ -371,16 +258,16 @@ public class BoardMain {
 					break;
 				}
 				break;
-				// myPage case 2 : 끝
+			// myPage case 2 : 끝
 			case 3: // 내 댓글 확인
 				myCommentList(member.getUserSerial());
 				boolean myCommentRun = true;
 				while (myCommentRun) {
 					int commentMenu;
-					System.out.println("1. 댓글 삭제 / 9. 뒤로가기");						
+					System.out.println("1. 댓글 삭제 / 9. 뒤로가기");
 					while (true) {
 						System.out.print("선택 >> ");
-						String input =scn.nextLine();
+						String input = scn.nextLine();
 						try {
 							commentMenu = Integer.parseInt(input.trim());
 							break;
@@ -408,27 +295,27 @@ public class BoardMain {
 					System.out.print("일련번호 입력 >>");
 					int serial;
 					try {
-				        serial = Integer.parseInt(scn.nextLine().trim());
-				    } catch (NumberFormatException e) {
-				        System.out.println("올바른 일련번호를 입력해주세요.");
-				        continue; // 다시 반복문 시작
-				    }
-				    if (serial == 0) {
-				        System.out.println("뒤로 돌아갑니다.");
-				        break;  // 반복문 종료
-				    } 
-					if(returnValues == 1) {
+						serial = Integer.parseInt(scn.nextLine().trim());
+					} catch (NumberFormatException e) {
+						System.out.println("올바른 일련번호를 입력해주세요.");
+						continue; // 다시 반복문 시작
+					}
+					if (serial == 0) {
+						System.out.println("뒤로 돌아갑니다.");
+						break; // 반복문 종료
+					}
+					if (returnValues == 1) {
 						continue;
 					}
 					boardContents(serial);
-					
+
 					boolean contentRun = true;
 					while (contentRun) {
 						int contentMenu;
-						System.out.println("1. 댓글쓰기 / 0. 뒤로가기");						
+						System.out.println("1. 댓글쓰기 / 0. 뒤로가기");
 						while (true) {
 							System.out.print("선택 >> ");
-							String input =scn.nextLine();
+							String input = scn.nextLine();
 							try {
 								contentMenu = Integer.parseInt(input.trim());
 								break;
@@ -452,12 +339,12 @@ public class BoardMain {
 
 					break;
 				}
-				
+
 				break;
 			case 5: // 로그아웃
-                return true; // 로그아웃 신호 main에 전달
+				return true; // 로그아웃 신호 main에 전달
 			case 6: // 회원탈퇴
-				memberDelete(member.getUserId(),member.getUserPw());
+				memberDelete(member.getUserId(), member.getUserPw());
 				break;
 			case 9:
 				System.out.println("돌아가기");
@@ -466,14 +353,15 @@ public class BoardMain {
 			default:
 				System.out.println("메뉴를 다시 선택하세요");
 			}
-		
+
 		}
 		System.out.println("마이페이지 종료");
 		return false; // 로그아웃 안함
 	}
+
 	// myPage 영역 시작
-		// 내 정보
-	private static void myInfo(String id, String pw) {
+	// 내 정보
+	private void myInfo(String id, String pw) {
 		Member member = login(id, pw);
 		int myBoardCount = 0;
 		int myCommentCount = 0;
@@ -484,8 +372,8 @@ public class BoardMain {
 			}
 		}
 		List<Comment> clist = commentDao.myCommentsList(member.getUserSerial());
-		for(Comment comment : clist) {
-			if(comment != null) {
+		for (Comment comment : clist) {
+			if (comment != null) {
 				myCommentCount++;
 			}
 		}
@@ -497,10 +385,9 @@ public class BoardMain {
 		System.out.println("내 작성글 수 : " + myBoardCount);
 		System.out.println("내 댓글 수 : " + myCommentCount);
 	} // myInfo
-		
-	
-		// 내 게시물 리스트 보기, 상세보기, 삭제, 수정
-	private static void myBoardList(int serial) {
+
+	// 내 게시물 리스트 보기, 상세보기, 삭제, 수정
+	private void myBoardList(int serial) {
 		List<Board> list = boardDao.myBoardList(serial);
 		int seqNo = 1;
 		System.out.println("순번 번호   제목         등록일");
@@ -511,7 +398,8 @@ public class BoardMain {
 			}
 		}
 	} // myBoardList
-	private static void myBoardLike(int serial) {
+
+	private void myBoardLike(int serial) {
 		List<Board> list = boardDao.myLikeBoard(serial);
 		int seqNo = 1;
 		System.out.println("순번 번호   제목         등록일");
@@ -521,8 +409,8 @@ public class BoardMain {
 			}
 		}
 	}
-	
-	private static void myBoardContents(String id, String pw, int serial, int userSerial) {
+
+	private void myBoardContents(String id, String pw, int serial, int userSerial) {
 		returnValues = 0;
 		Member member = login(id, pw);
 		BoardJdbc dao = new BoardJdbc();
@@ -536,10 +424,11 @@ public class BoardMain {
 			System.out.println("=========================================");
 			myBoardList(member.getUserSerial());
 			returnValues = 1;
-			
+
 		}
 	} // myBoardContents
-	private static void myBoardDelete(int serial, int userSerial) {
+
+	private void myBoardDelete(int serial, int userSerial) {
 		while (true) {
 			System.out.println("\"" + serial + "\" 해당 게시물을 삭제하겠습니까? (Y/N)");
 			String deleteYN = scn.nextLine();
@@ -554,7 +443,8 @@ public class BoardMain {
 			System.out.println("Y 또는 N 을 입력해주세요.");
 		}
 	}
-	private static void myBoardUpdate(int serial, int userSerial) {
+
+	private void myBoardUpdate(int serial, int userSerial) {
 		returnValues = 0;
 		System.out.println("수정할 제목을 입력해주세요.");
 		System.out.print("입력 >> ");
@@ -562,8 +452,8 @@ public class BoardMain {
 		System.out.println("수정할 내용을 입력해주세요.");
 		System.out.print("입력 >> ");
 		String boardContent = scn.nextLine();
-		
-		if(boardTitle.isBlank() || boardContent.isBlank()) {
+
+		if (boardTitle.isBlank() || boardContent.isBlank()) {
 			System.out.println("========================");
 			System.out.println("제목 또는 내용에 공백을 넣을 수는 없습니다.");
 			System.out.println("수정을 종료합니다.");
@@ -576,17 +466,17 @@ public class BoardMain {
 		board.setBoardContents(boardContent);
 		board.setBoardSerial(serial);
 		board.setUserSerial(userSerial);
-		
-		if(boardDao.myBoardContentUpdate(board)){
+
+		if (boardDao.myBoardContentUpdate(board)) {
 			System.out.println("수정 되었습니다.");
 			returnValues = 1;
-		}else {
+		} else {
 			System.out.println("수정 실패");
 		}
-		
-		
+
 	}
-	private static void boardComment(int serial) {
+
+	private void boardComment(int serial) {
 		List<Comment> list = commentDao.boardComment(serial);
 		System.out.println("<===== 댓글 영역 =====>");
 		for (Comment comment : list) {
@@ -595,28 +485,30 @@ public class BoardMain {
 			}
 		}
 		System.out.println("<===== 댓글 영역 =====>");
-	}	
-		// 내 댓글 확인, 삭제
-	private static void myCommentList(int serial) {
+	}
+
+	// 내 댓글 확인, 삭제
+	private void myCommentList(int serial) {
 		List<Comment> list = commentDao.myCommentsList(serial);
 		int seqNo = 1;
 		System.out.println("==========================================");
-		for(Comment comment : list) {
-			if(comment != null) {
+		for (Comment comment : list) {
+			if (comment != null) {
 				System.out.println("<" + seqNo++ + "> " + comment.myCommentListShow());
 				System.out.println("==========================================");
 			}
 		}
 	}
-	private static void myCommentDelete(int userSerial) {
+
+	private void myCommentDelete(int userSerial) {
 		System.out.println("삭제를 진행할 댓글 번호를 입력해주세요. (삭제취소 : 0)");
-		while(true) {
+		while (true) {
 			System.out.print("선택 >> ");
 			String num = scn.nextLine();
-			if(commentDao.myCommentDelete(Integer.parseInt(num),userSerial)) {
+			if (commentDao.myCommentDelete(Integer.parseInt(num), userSerial)) {
 				System.out.println("댓글번호 : " + num + " 댓글이 삭제되었습니다.");
 				break;
-			}else if(Integer.parseInt(num) == 0) {
+			} else if (Integer.parseInt(num) == 0) {
 				System.out.println("취소되었습니다.");
 				break;
 			} else {
@@ -625,24 +517,26 @@ public class BoardMain {
 			}
 		}
 	}
+
 	// myPage 영역 끝
 	// 게시판 영역
-	private static void tbBoard() {
+	private void tbBoard() {
 		stopValues = 0;
-		Member member = login(id, pw); 
+		Member member = login(id, pw);
 		List<Board> list = boardDao.tbBoard();
 		int seqNo = 1;
 		System.out.println("순번     번호             제목                  등록일");
 		for (Board board : list) {
 			if (board != null) {
 				int likeCount = boardDao.boardLikeCount(board.getBoardSerial());
-				System.out.println("<" + seqNo++ + "> 게시물 번호 : " + board.getBoardSerial() + " / 제목 : " + board.getBoardTitle() + " / 등록일 : " + board.getBoardDate() + " / 좋아요 수 : " + likeCount);  
+				System.out.println("<" + seqNo++ + "> 게시물 번호 : " + board.getBoardSerial() + " / 제목 : "
+						+ board.getBoardTitle() + " / 등록일 : " + board.getBoardDate() + " / 좋아요 수 : " + likeCount);
 			}
 		}
-		
+
 		boolean run = true;
-		while(run) {
-			if(stopValues == 1) {
+		while (run) {
+			if (stopValues == 1) {
 				break;
 			}
 			System.out.println("======================================");
@@ -664,31 +558,31 @@ public class BoardMain {
 					System.out.print("일련번호 입력 >>");
 					int serial;
 					try {
-				        serial = Integer.parseInt(scn.nextLine().trim());
-				    } catch (NumberFormatException e) {
-				        System.out.println("올바른 일련번호를 입력해주세요.");
-				        continue; // 다시 반복문 시작
-				    }
-				    if (serial == 0) {
-				        System.out.println("뒤로 돌아갑니다.");
-				        tbBoard();
-				        break;  // 반복문 종료
-				    } 
-					if(returnValues == 1){
+						serial = Integer.parseInt(scn.nextLine().trim());
+					} catch (NumberFormatException e) {
+						System.out.println("올바른 일련번호를 입력해주세요.");
+						continue; // 다시 반복문 시작
+					}
+					if (serial == 0) {
+						System.out.println("뒤로 돌아갑니다.");
+						tbBoard();
+						break; // 반복문 종료
+					}
+					if (returnValues == 1) {
 						returnValues = 0;
 						continue;
 					}
 					boardContents(serial);
-					
+
 					boolean contentRun = true;
 					while (contentRun) {
-						
+
 						int contentMenu;
 						System.out.println("======================================");
-						System.out.println("1. 댓글쓰기 / 2. 좋아요 / 0. 뒤로가기");						
+						System.out.println("1. 댓글쓰기 / 2. 좋아요 / 0. 뒤로가기");
 						while (true) {
 							System.out.print("선택 >> ");
-							String input =scn.nextLine();
+							String input = scn.nextLine();
 							try {
 								contentMenu = Integer.parseInt(input.trim());
 								break;
@@ -730,11 +624,12 @@ public class BoardMain {
 			default:
 				System.out.println("메뉴를 다시 선택하세요");
 			}
-			
+
 		}
-		
+
 	}
-	private static void boardContents(int serial) {
+
+	private void boardContents(int serial) {
 		BoardJdbc dao = new BoardJdbc();
 		Board content = dao.boardContent(serial);
 		if (content != null) {
@@ -746,12 +641,11 @@ public class BoardMain {
 			System.out.println("=========================================");
 			tbBoard();
 			returnValues = 1;
-			
+
 		}
 	} // myBoardContents
-	
-	
-	private static void addComment(int boardSerial, int userSerial) {
+
+	private void addComment(int boardSerial, int userSerial) {
 		System.out.print("댓글 내용 입력(공백 시 취소) >> ");
 		String content = scn.nextLine();
 		if (content.isBlank()) {
@@ -763,49 +657,50 @@ public class BoardMain {
 			System.out.println("댓글 등록이 완료되었습니다..");
 		} else {
 			System.out.println("등록이 실패하였습니다.");
-		}	
+		}
 	}
-	private static void addBoard(int userSerial) {
+
+	private void addBoard(int userSerial) {
 		System.out.println("제목을 입력해주세요.");
 		System.out.print("입력 >> ");
 		String boardTitle = scn.nextLine();
 		System.out.println("내용을 입력해주세요.");
 		System.out.print("입력 >> ");
 		String boardContent = scn.nextLine();
-		
-		if(boardTitle.isBlank() || boardContent.isBlank()) {
+
+		if (boardTitle.isBlank() || boardContent.isBlank()) {
 			System.out.println("========================");
 			System.out.println("제목 또는 내용에 공백을 넣을 수는 없습니다.");
 			System.out.println("등록을 종료합니다.");
 			System.out.println("========================");
 			return;
 		}
-		
+
 		Board board = new Board();
 		board.setBoardTitle(boardTitle);
 		board.setBoardContents(boardContent);
 		board.setUserSerial(userSerial);
-		
-		if(boardDao.boardInsert(board)){
+
+		if (boardDao.boardInsert(board)) {
 			System.out.println("등록 되었습니다.");
-		}else {
+		} else {
 			System.out.println("등록 실패");
 		}
 	}
-	
-	private static void boardContentLike(int boardSerial, int userSerial) {
+
+	private void boardContentLike(int boardSerial, int userSerial) {
 		while (true) {
 			System.out.println("\"" + boardSerial + "\" 해당 게시물을 '좋아요'하겠습니까? (Y/N)");
 			String deleteYN = scn.nextLine();
 			if (deleteYN.equals("Y") || deleteYN.equals("y")) {
-				if(boardDao.boardLike(boardSerial, userSerial)) {
+				if (boardDao.boardLike(boardSerial, userSerial)) {
 					System.out.println("게시물 번호 : " + boardSerial + " '좋아요'하였습니다.");
 					break;
-				}else {
+				} else {
 					System.out.println("이미 '좋아요'하였습니다.");
 					break;
 				}
-				
+
 			} else if (deleteYN.equals("N") || deleteYN.equals("n")) {
 				System.out.println("취소되었습니다.");
 				break;
