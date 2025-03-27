@@ -11,7 +11,7 @@ import java.util.List;
 public class CommentJdbc {
 	// Connection 생성.
 		Connection getConnect() {
-			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+			String url = "jdbc:oracle:thin:@192.168.0.31:1521:xe";
 			String userId = "scott";
 			String userPw = "tiger";
 			try {
@@ -39,8 +39,8 @@ public class CommentJdbc {
 					comment.setUserSerial(rs.getInt("user_serial"));
 					comment.setCommentDate(rs.getString("comment_date"));
 					list.add(comment);
-
 				}
+				conn.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -57,6 +57,7 @@ public class CommentJdbc {
 				psmt.setInt(2, userSerial);
 				int r = psmt.executeUpdate();
 				if (r > 0) {
+					conn.close();
 					return true;
 				}
 
@@ -83,13 +84,11 @@ public class CommentJdbc {
 					comment.setCommentContents(rs.getString("comment_contents"));
 					comment.setCommentDate(rs.getString("comment_date"));
 					list.add(comment);
-
 				}
+				conn.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-
-					
 			return list;
 		}
 		
@@ -117,6 +116,7 @@ public class CommentJdbc {
 				
 				int r = stmt.executeUpdate();
 				if (r > 0) {
+					conn.close();
 					return true; // 등록성공
 				}
 				
@@ -126,5 +126,25 @@ public class CommentJdbc {
 			return false;
 		}
 		
+		public String commentUserName(int commentSerial) {
+			Connection conn = getConnect();
+			String sql = "select user_name from tb_member where\r\n"
+					+ "user_serial = (select user_serial from tb_board_comment where comment_serial = ?)";
+			String name = "";
+			try {
+				PreparedStatement psmt = conn.prepareStatement(sql);
+				psmt.setInt(1, commentSerial);
+				ResultSet rs = psmt.executeQuery();
+				if (rs.next()) {
+					conn.close();
+					name = rs.getString(1);
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			return name;
+		}
 		
 }

@@ -22,13 +22,15 @@ public class Board {
 	}
 	
 	public String showMyBoardList() {		
-		return boardSerial + " / " + boardTitle + " / " + boardDate;
+		return String.format("%-3d",boardSerial) + " | " + String.format("%-10s",boardTitle).substring(0, 10) + " | " + boardDate;
 	}
 	
-	public String boardShow() {
-		return "게시물 번호 : " + boardSerial +  " / 게시물 제목 : " + boardTitle + " / 작성자 : 홍길동" + " / 등록일 : " + boardDate + " \n내용 : " + boardContents;
+	public String boardShowU() {
+		return "게시물 번호 : " + boardSerial +  " / 게시물 제목 : " + boardTitle + " / 작성자 : ";
 	}
-	
+	public String boardShowD() {
+		return " / 등록일 : " + boardDate + " \n내용 : " + boardContents;
+	}
 	
 	public String showMyBoard() {
 		return "제목 : " + boardTitle + " / 등록일 : " +  boardDate + "\n내용 : " + boardContents ;

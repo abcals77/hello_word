@@ -12,7 +12,7 @@ import java.util.List;
 public class MemberJdbc {
 	// Connection 생성.
 	Connection getConnect() {
-		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String url = "jdbc:oracle:thin:@192.168.0.31:1521:xe";
 		String userId = "scott";
 		String userPw = "tiger";
 		try {
@@ -32,16 +32,20 @@ public class MemberJdbc {
 			psmt.setString(1, id);
 			psmt.setString(2, pw);
 			ResultSet rs = psmt.executeQuery();
+			Member member = null;
 			if(rs.next()) {
-				Member member = new Member(rs.getInt("user_serial"),
+				member = new Member(rs.getInt("user_serial"),
 									rs.getString("user_id"),
 									rs.getString("user_pw"),
 									rs.getString("user_name"),
 									rs.getString("user_email"),
 									rs.getString("user_date"),
 									rs.getInt("user_status"));
-				return member;
 			}
+
+			conn.close();	
+			return member;
+					
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -64,8 +68,8 @@ public class MemberJdbc {
 				member.setUserEmail(rs.getString("user_email"));
 				member.setUserDate(rs.getString("user_date"));
 				list.add(member);
-
 			}
+			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}		
@@ -100,6 +104,7 @@ public class MemberJdbc {
 			
 			int r = stmt.executeUpdate();
 			if (r > 0) {
+				conn.close();
 				return true; // 등록성공
 			}
 			
@@ -119,6 +124,7 @@ public class MemberJdbc {
 			psmt.setString(2, userPw);
 			int r = psmt.executeUpdate();
 			if (r > 0) {
+				conn.close();
 				return true;
 			}
 

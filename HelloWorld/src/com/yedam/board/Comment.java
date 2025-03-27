@@ -29,10 +29,12 @@ public class Comment {
 	public String myCommentListShow() {
 		return "댓글 번호 : " + commentSerial + " / 게시물 번호 : "+ boardSerial + " / 등록일 : " + commentDate + "\n내용 : " + commentContents;
 	}
-	public String boardCommentShow() {
-		return "댓글 번호 : " + commentSerial + " / 등록일 : " + commentDate + "\n내용 : " + commentContents;
+	public String boardCommentShowU() {
+		return "댓글 번호 : " + commentSerial + " / 작성 : ";
 	}
-	
+	public String boardCommentShowD() {
+		return " / 등록일 : " + commentDate + "\n내용 : " + commentContents;
+	}
 	
 	public int getCommentSerial() {
 		return commentSerial;

@@ -12,7 +12,7 @@ import java.util.List;
 public class BoardJdbc {
 	// Connection 생성.
 	Connection getConnect() {
-		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String url = "jdbc:oracle:thin:@192.168.0.31:1521:xe";
 		String userId = "scott";
 		String userPw = "tiger";
 		try {
@@ -41,8 +41,8 @@ public class BoardJdbc {
 				board.setBoardDate(rs.getString("board_date"));
 				board.setBoardUpDate(rs.getString("board_up_date"));
 				list.add(board);
-
 			}
+			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -76,8 +76,8 @@ public class BoardJdbc {
 				board.setBoardContents(rs.getString("board_contents"));
 				board.setBoardDate(rs.getString("board_date"));
 				list.add(board);
-
 			}
+			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -103,7 +103,7 @@ public class BoardJdbc {
 				board.setBoardContents(rs.getString("board_contents"));
 				board.setBoardDate(rs.getString("board_date"));
 				board.setBoardUpDate(rs.getString("board_up_date"));
-
+				conn.close();
 				return board;
 			}
 		} catch (SQLException e) {
@@ -123,6 +123,7 @@ public class BoardJdbc {
 			psmt.setInt(2, userSerial);
 			int r = psmt.executeUpdate();
 			if (r > 0) {
+				conn.close();
 				return true;
 			}
 
@@ -145,6 +146,7 @@ public class BoardJdbc {
 
 			int r = psmt.executeUpdate();
 			if (r > 0) {
+				conn.close();
 				return true; // 수정성공
 			}
 
@@ -171,6 +173,7 @@ public class BoardJdbc {
 				board.setBoardUpDate(rs.getString("board_up_date"));
 				list.add(board);
 			}
+			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -193,7 +196,7 @@ public class BoardJdbc {
 				board.setBoardContents(rs.getString("board_contents"));
 				board.setBoardDate(rs.getString("board_date"));
 				board.setBoardUpDate(rs.getString("board_up_date"));
-
+				conn.close();
 				return board;
 			}
 		} catch (SQLException e) {
@@ -218,6 +221,7 @@ public class BoardJdbc {
 			psmt.setInt(4, userSerial);
 			int r = psmt.executeUpdate();
 			if (r > 0) {
+				conn.close();
 				return true;
 			}
 
@@ -253,6 +257,7 @@ public class BoardJdbc {
 			
 			int r = stmt.executeUpdate();
 			if (r > 0) {
+				conn.close();
 				return true; // 등록성공
 			}
 			
@@ -272,6 +277,7 @@ public class BoardJdbc {
 			ResultSet rs = psmt.executeQuery();
 			if (rs.next()) {
 				count = rs.getInt(1);
+				conn.close();
 			}
 
 		} catch (SQLException e) {
@@ -279,6 +285,27 @@ public class BoardJdbc {
 		}
 		
 		return count;
+	}
+	
+	public String boardUserName(int boardSerial) {
+		Connection conn = getConnect();
+		String sql = "select user_name from tb_member where\r\n"
+				+ "user_serial = (select user_serial from tb_board where board_serial = ?)";
+		String name = "";
+		try {
+			PreparedStatement psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, boardSerial);
+			ResultSet rs = psmt.executeQuery();
+			if (rs.next()) {
+				name = rs.getString(1);
+				conn.close();
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return name;
 	}
 	
 }
