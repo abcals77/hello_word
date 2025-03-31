@@ -51,7 +51,7 @@ public class MainServlet extends HttpServlet {
 			html += "<thead><tr><th>글번호</th><th>제목</th><th>내용</th><th>작성자</th><th>작성일시</th></tr><thead>";
 			html += "<tbody>";
 			for (BoardVO board : list) {
-				html += "<tr><td>" + board.getBoardNo() + "</td>" + "<td>" + board.getTitle() + "</td>" + "<td>"
+				html += "<tr><td>" + board.getBoardNo() + "</td>" + "<td><a href = 'getBoard?board_no=" + board.getBoardNo() + "'>" + board.getTitle() + "</a></td>" + "<td>"
 						+ board.getContent() + "</td>" + "<td>" + board.getWriter() + "</td>" + "<td>"
 						+ board.getWriteDate() + "</td></tr>";
 			}

@@ -13,6 +13,16 @@
   	<url-pattern>/mainsevlet</url-pattern>
   </servlet-mapping>
   
+  <!-- MVC2패턴(Controller:서블릿) -->
+  <servlet>
+  	<servlet-name>front</servlet-name>
+  	<servlet-class>com.yedam.common.FrontController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>front</servlet-name>
+  	<url-pattern>*.do</url-pattern> 
+  </servlet-mapping>
+  
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
