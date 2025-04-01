@@ -22,16 +22,7 @@ public class Test {
 		try(SqlSession sqlSession = sqlSessionFactory.openSession()){
 			BoardMapper mapper = sqlSession.getMapper(BoardMapper.class);
 			
-//			int r = sqlSession.update("com.yedam.mapper.BoardMapper.deleteBoard", board.getBoardNo());
-			int r = mapper.deleteBoard(board.getBoardNo());
-			if (r == 1) {
-				System.out.println("등록성공.");
-				sqlSession.commit();
-			} else {
-				System.out.println("등록실패.");
-			}
-//			List<BoardVO> list = sqlSession.selectList("com.yedam.mapper.BoardMapper.selectBoard");
-			List<BoardVO> list = mapper.selectBoard();
+			List<BoardVO> list = mapper.selectBoard(3);
 			for(BoardVO brd : list) {
 				System.out.println(brd.toString());
 			}

@@ -6,16 +6,27 @@
 <mapper namespace="com.yedam.mapper.BoardMapper">
 	
 	<!-- 목록. -->
-	<select id="selectBoard" resultType="board">
-		select
-		board_no,
-		title,
-		writer,
-		content,
-		write_date
-		from
-		tbl_board
-		order by board_no desc
+	<select id="selectBoard" resultType="board" parameterType = "search">
+		select b.*
+		from (select rownum rn, a.*
+    		from (select *
+            	from tbl_board 
+            	<choose>
+            		<when test ="searchCondition != null and searchCondition == 'T'.toString()">
+            			where title like '%' || #{keyword} || '%'
+            		</when>
+            		<when test ="searchCondition != null and searchCondition == 'W'.toString()">
+            			where writer like '%' || #{keyword} || '%'
+            		</when>
+            		<when test ="searchCondition != null and searchCondition == 'TW'.toString()">
+            			where (title like '%' || #{keyword} || '%' or writer like '%' || #{keyword} || '%')   
+            		</when>
+            	</choose>
+            	order by board_no desc) a) b
+		where b.rn > (#{page} - 1) * 5
+		<![CDATA[
+		and b.rn <= (#{page} * 5)
+		]]>
 	</select>
 	<!-- 등록. -->
 	<insert id="insertBoard" parameterType="board">
@@ -25,9 +36,11 @@
 	<!-- 수정 -->
 	<update id="updateBoard" parameterType="board">
 		update tbl_board set
-			title = nvl(#{title},title)
+			<if test="title != null">
+				title = #{title}
+			</if>
 			<if test="content != null">
-				content = #{content}
+				,content = #{content}
 			</if>
 		where board_no = #{boardNo} 
 	</update>
@@ -46,5 +59,19 @@
 		write_date
 		from tbl_board where board_no = #{boardNo}
 	</select>
-	
+	<!-- 전체건수. -->
+	<select id = "selectTotal" resultType = "int" parameterType = "search">
+		select count(1) from tbl_board
+		<choose>
+            <when test ="searchCondition != null and searchCondition == 'T'.toString()">
+            	where title like '%' || #{keyword} || '%'
+            </when>
+            <when test ="searchCondition != null and searchCondition == 'W'.toString()">
+            	where writer like '%' || #{keyword} || '%'
+        	</when>
+          	<when test ="searchCondition != null and searchCondition == 'TW'.toString()">
+            	where (title like '%' || #{keyword} || '%' or writer like '%' || #{keyword} || '%')   
+            </when>
+    	</choose>
+	</select>
 </mapper>
