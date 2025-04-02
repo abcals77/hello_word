@@ -25,7 +25,7 @@ public class BoardControl implements Control {
 		BoardMapper mapper = sqlSession.getMapper(BoardMapper.class);
 		
 		BoardVO board = mapper.selectContent(Integer.parseInt(boardNo));
-		req.setAttribute("cboard", board);
+		req.setAttribute("board", board);
 		req.setAttribute("page", page);
 		
 		

@@ -22,7 +22,7 @@ public class Test {
 		try(SqlSession sqlSession = sqlSessionFactory.openSession()){
 			BoardMapper mapper = sqlSession.getMapper(BoardMapper.class);
 			
-			List<BoardVO> list = mapper.selectBoard(3);
+			List<BoardVO> list = mapper.selectBoard(null);
 			for(BoardVO brd : list) {
 				System.out.println(brd.toString());
 			}

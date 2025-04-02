@@ -5,7 +5,7 @@
 <jsp:include page="includes/header.jsp"></jsp:include>
 <h3>삭제화면(deleteForm.jsp)</h3>
 <%
-BoardVO board = (BoardVO) request.getAttribute("dboard");
+BoardVO board = (BoardVO) request.getAttribute("board");
 String paging = (String) request.getAttribute("page");
 %>
 <form action="deleteBoard.do" onsubmit="return confirm('정말 삭제하시겠습니까?');">

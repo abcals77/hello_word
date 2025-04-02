@@ -1,17 +1,10 @@
-<%@page import="com.yedam.common.PageDTO"%>
-<%@page import="com.yedam.vo.BoardVO"%>
-<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix = "fmt" %>
 <jsp:include page="includes/header.jsp"></jsp:include>
 <!-- webapp/WEB-INF/views/boardList.jsp -->
-<%
-List<BoardVO> list = (List<BoardVO>) request.getAttribute("blist"); // blist에 담긴 정보를 가져옴
-PageDTO pageDTO = (PageDTO) request.getAttribute("paging");
-String sc = (String) request.getAttribute("searchCondition");
-String kw = (String) request.getAttribute("keyword");
-%>
-<p><%=pageDTO %></p>
+<!-- blist, paging, searchCondition, keyword -->
 <h3>게시글 목록(boardList.jsp)</h3>
 <!-- 검색조건. -->
 <form action = "boardList.do">
@@ -27,7 +20,10 @@ String kw = (String) request.getAttribute("keyword");
 <div class="col-sm-4">
  	<select name="searchCondition" class="form-control">
     	<option value="">선택하세요</option>
-    	<% for (String[] option : options) {
+    	<% 
+    		String sc = (String) request.getAttribute("searchCondition");
+    		String kw = (String) request.getAttribute("keyword");
+    		for (String[] option : options) {
         	String val = option[0];
         	String label = option[1];
         	boolean selected = val.equals(sc);
@@ -37,7 +33,14 @@ String kw = (String) request.getAttribute("keyword");
  	</select>
 </div>
 	<div class = "col-sm-6">
-			<input type = "text" name = "keyword" class = "form-control" value = <%= kw == null ? "" : kw %>>
+	<c:choose>
+		<c:when test="${keyword == null}">
+			<input type = "text" name = "keyword" class = "form-control" value = "">
+		</c:when>
+		<c:otherwise>
+			<input type = "text" name = "keyword" class = "form-control" value = "${keyword}">
+		</c:otherwise>
+	</c:choose>
 	</div>
 	<div class = "col-sm-2">
 		<button type = "submit" class = "btn btn-info">검색</button>	
@@ -54,57 +57,69 @@ String kw = (String) request.getAttribute("keyword");
 		</tr>
 	</thead>
 	<tbody>
-		<%
-		for (BoardVO board : list) {
-		%>
-		<tr>
-			<td><%=board.getBoardNo()%></td>
-			<td><a href='board.do?page=<%=pageDTO.getCurrentPage() %>&bno=<%=board.getBoardNo()%>'><%=board.getTitle()%></a></td>
-			<td><%=board.getWriter()%></td>
-			<td><%=board.getWriteDate()%></td>
-		</tr>
-		<%
-		}
-		%>
+		<c:forEach var="board" items="${blist}">
+			<tr>
+				<td><c:out value="${board.boardNo}" /></td>
+				<td><a href='board.do?page=${paging.currentPage}&bno=${board.boardNo}'><c:out value="${board.title}"/></a></td>
+				<td><c:out value="${board.writer}" /></td>
+				<td><fmt:formatDate value="${board.writeDate}" pattern = "yyyy-MM-dd HH:mm:ss" /></td>
+			</tr>
+		</c:forEach>
 	</tbody>
 </table>
 <!-- paging 처리 -->
 <nav aria-label="...">
 	<ul class="pagination">
 	<!-- 이전 10개 페이지여부. -->
-		<%if(pageDTO.isPrev()){ %>
+	<c:choose>
+		<c:when test="${paging.prev}">
 		<li class="page-item">
-			<a class="page-link" href="boardList.do?page=1&searchCondition=<%=sc %>&keyword=<%=kw %>">첫페이지</a>
+			<a class="page-link" href="boardList.do?page=1&searchCondition=${searchCondition}&keyword=${keyword}">첫페이지</a>
 		</li>
 		<li class="page-item"> <!-- 11페이지에서 10페이지로 이동 -->
-			<a class="page-link" href="boardList.do?page=<%=pageDTO.getStartPage() - 1 %>&searchCondition=<%=sc %>&keyword=<%=kw %>">Next</a>
+			<a class="page-link" href="boardList.do?page=${paging.startPage - 1}&searchCondition=${searchCondition}&keyword=${keyword}">Next</a>
 		</li>
-		<%} else {%>
+		</c:when>
+		<c:otherwise>
 		<li class="page-item disabled">
 			<span class="page-link">Previous</span>
 		</li>
-		<%} %>
-		<% for (int p = pageDTO.getStartPage(); p <= pageDTO.getEndPage(); p++){%>
-		<% if (pageDTO.getCurrentPage() == p) { %>
-		<li class="page-item active" aria-current="page"><span
-			class="page-link"><%=p %></span></li>
-		<%} else{ %>
-		<li class="page-item"><a class="page-link" href="boardList.do?page=<%=p %>&searchCondition=<%=sc %>&keyword=<%=kw %>"><%=p %></a></li>
-		<% }
-		} %>
+		</c:otherwise>
+	</c:choose>
+	<c:forEach var="p" begin="${paging.startPage }" end="${paging.endPage }">
+      <c:choose>
+        <c:when test="${paging.currentPage == p }">
+          <li class="page-item active" aria-current="page">
+            <span class="page-link">${p }</span>
+          </li>
+        </c:when>
+        <c:otherwise>
+          <li class="page-item">
+            <a class="page-link" 
+               href="boardList.do?page=${p }&searchCondition=${searchCondition }&keyword=${keyword }">
+               ${p }
+            </a>
+          </li>
+        </c:otherwise>
+      </c:choose>
+	</c:forEach>
 		<!-- 이후 10개 페이지여부. -->
-		<%if(pageDTO.isNext()){ %>
-		<li class="page-item"> <!-- 1페이지에서 11페이지로 이동 -->
-			<a class="page-link" href="boardList.do?page=<%=pageDTO.getEndPage() + 1 %>&searchCondition=<%=sc %>&keyword=<%=kw %>">Next</a>
+		<c:choose>
+		<c:when test="${paging.next}">
+		<li class="page-item"> <!-- 11페이지에서 10페이지로 이동 -->
+			<a class="page-link" href="boardList.do?page=${paging.endPage + 1}&searchCondition=${searchCondition}&keyword=${keyword}">Next</a>
 		</li>
 		<li class="page-item">
-			<a class="page-link" href="boardList.do?page=<%=pageDTO.getRealEnd() %>&searchCondition=<%=sc %>&keyword=<%=kw %>">마지막</a>
+			<a class="page-link" href="boardList.do?page=${paging.realEnd}&searchCondition=${searchCondition}&keyword=${keyword}">마지막</a>
 		</li>
-		<%} else {%>
+		</c:when>
+		<c:otherwise>
 		<li class="page-item disabled">
-			<span class="page-link">Next</span>
+			<span class="page-link">Previous</span>
 		</li>
-		<%} %>
+		</c:otherwise>
+	</c:choose>
+
 	</ul>
 </nav>
 <jsp:include page="includes/footer.jsp"></jsp:include>
