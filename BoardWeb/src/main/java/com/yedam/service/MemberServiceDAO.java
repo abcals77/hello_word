@@ -6,12 +6,12 @@ import com.yedam.vo.MemberVO;
 // MemberServiceDAO - jdbc 기능구현
 // MemberSerivceImpl - mybatis 기능구현.
 
-public class MemberServiceDAO implements MemberService {
-
-	@Override
-	public MemberVO login(String id, String pw) {
-
-		return null;
-	}
-
-}
+//public class MemberServiceDAO implements MemberService {
+//
+//	@Override
+//	public MemberVO login(String id, String pw) {
+//
+//		return null;
+//	}
+//
+//}

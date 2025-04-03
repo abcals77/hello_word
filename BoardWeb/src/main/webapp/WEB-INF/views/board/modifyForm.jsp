@@ -3,7 +3,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix = "fmt" %>
 <!-- modifyBoard.jsp -->
-<jsp:include page="includes/header.jsp"></jsp:include>
 <h3>수정화면(modifyForm.jsp)</h3>
 <form action="modifyBoard.do">
 	<input type = "hidden" name = "bno" value = "${board.boardNo}">
@@ -34,4 +33,3 @@
 		</tr>
 	</table>
 </form>
-<jsp:include page="includes/footer.jsp"></jsp:include>

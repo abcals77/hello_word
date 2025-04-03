@@ -46,7 +46,7 @@ public class BoardListControl implements Control {
 		
 		// boardList.do - jsp 출력. : 페이지재지정.
 		// boardList로 blist를 보냄
-		req.getRequestDispatcher("/WEB-INF/views/boardList.jsp").forward(req, resp);
+		req.getRequestDispatcher("board/boardList.tiles").forward(req, resp);
 		
 	}
 

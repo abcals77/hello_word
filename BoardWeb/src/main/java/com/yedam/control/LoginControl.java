@@ -23,18 +23,26 @@ public class LoginControl implements Control {
 		// 서비스객체 처리.
 		MemberService svc = new MemberServiceImpl();
 		MemberVO mvo = svc.login(id, pw);
-		
+		System.out.println(mvo);
 		if(mvo == null) {
 			req.setAttribute("msg", "아이디와 비밀번호를 확인하세요.");
-			req.getRequestDispatcher("WEB-INF/views/loginForm.jsp").forward(req, resp);
+			req.getRequestDispatcher("WEB-INF/views/member/loginForm.jsp").forward(req, resp);
+			
 		} else {
 			// 로그인 성공 => 세션객체. 로그인정보 저장.
 			HttpSession session = req.getSession();
 			session.setAttribute("logId", id); // 세션객체의 attribute에 저장
 			session.setAttribute("userName", mvo.getMemberName());
 			session.setAttribute("responsibility", mvo.getResponsibility());
+			session.setAttribute("img", mvo.getImages());
 			
-			resp.sendRedirect("boardList.do");
+			if(mvo.getResponsibility().equals("User")){
+//				resp.sendRedirect("boardList.do");
+				req.getRequestDispatcher("common/main.tiles").forward(req, resp);
+			} else if(mvo.getResponsibility().equals("Admin")) {
+				req.getRequestDispatcher("manager/main.tiles").forward(req, resp);
+			}
+			
 		}
 		
 		

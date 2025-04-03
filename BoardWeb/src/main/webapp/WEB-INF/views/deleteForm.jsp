@@ -2,7 +2,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!-- modifyBoard.jsp -->
-<jsp:include page="includes/header.jsp"></jsp:include>
 <h3>삭제화면(deleteForm.jsp)</h3>
 <%
 BoardVO board = (BoardVO) request.getAttribute("board");
@@ -37,4 +36,3 @@ String paging = (String) request.getAttribute("page");
 		</tr>
 	</table>
 </form>
-<jsp:include page="includes/footer.jsp"></jsp:include>

@@ -30,7 +30,7 @@ public class BoardControl implements Control {
 		
 		
 		// board.jsp 전달.
-		req.getRequestDispatcher("/WEB-INF/views/board.jsp").forward(req, resp);
+		req.getRequestDispatcher("board/board.tiles").forward(req, resp);
 	}
 	
 }

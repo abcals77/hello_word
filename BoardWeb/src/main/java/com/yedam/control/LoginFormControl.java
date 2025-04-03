@@ -15,7 +15,7 @@ public class LoginFormControl implements Control {
 		// 로그인 화면 open. WEB-INF/views/loginForm.jsp
 		
 		
-		req.getRequestDispatcher("/WEB-INF/views/loginForm.jsp").forward(req, resp);
+		req.getRequestDispatcher("WEB-INF/views/member/loginForm.jsp").forward(req, resp);
 	}
 
 }

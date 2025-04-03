@@ -19,7 +19,7 @@ public class AddBoardControl implements Control{
 	public void exec(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		if(req.getMethod().equals("GET")) {
 			// 요청재지정. // get방식요청 : url에 직접 입력, 링크
-			req.getRequestDispatcher("/WEB-INF/views/addForm.jsp").forward(req, resp);
+			req.getRequestDispatcher("board/addForm.tiles").forward(req, resp);
 		} else if(req.getMethod().equals("POST")) {
 			// 등록
 			req.setCharacterEncoding("UTF-8");

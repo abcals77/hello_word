@@ -9,9 +9,14 @@
 		user_id memberID,
 		password memberPw,
 		user_name memberName,
-		responsibility
+		responsibility,
+		images
 		from tbl_member
 		where user_id = #{id}
 		and password = #{pw}
 	</select>
+	<insert id ="insertMember" parameterType = "member">
+		insert into tbl_member(user_id, user_name, password, responsibility, images)
+		values (#{memberId}, #{memberName}, #{memberPw}, 'User', #{images})
+	</insert>
 </mapper>
