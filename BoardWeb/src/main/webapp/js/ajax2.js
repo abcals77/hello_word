@@ -8,5 +8,5 @@ xhtp.send();
 xhtp.onload = function(){ // load이벤트 발생.
 	// 화면출력
 	document.querySelector('nav + div.container-fluid').innerHTML = xhtp.responseText;
-	
 }
+
