@@ -36,6 +36,7 @@ public class BoardListControl implements Control {
 		SqlSession sqlSession = DataSource.getInstance().openSession();
 		BoardMapper mapper = sqlSession.getMapper(BoardMapper.class);
 		List<BoardVO> list = mapper.selectBoard(search);
+		
 		req.setAttribute("blist", list); // blist에 list 객체를 담음
 		// 페이징계산.
 		int totalCnt = mapper.selectTotal(search);
@@ -46,7 +47,7 @@ public class BoardListControl implements Control {
 		
 		// boardList.do - jsp 출력. : 페이지재지정.
 		// boardList로 blist를 보냄
-		req.getRequestDispatcher("board/boardList.tiles").forward(req, resp);
+		req.getRequestDispatcher("board/boardList2.tiles").forward(req, resp);
 		
 	}
 

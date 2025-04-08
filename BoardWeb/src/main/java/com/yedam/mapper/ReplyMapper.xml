@@ -4,16 +4,22 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.yedam.mapper.ReplyMapper">
+	
+	
 	<!-- 댓글목록. -->
-	<select id="selectList" resultType="reply" parameterType="int">
-		select reply_no
-			,reply
-			,replyer
-			,reply_date
-			,board_no
-		from tbl_reply
-		where board_no = #{boardNo}
-		order by reply_no
+	<select id="selectList" resultType="reply" parameterType="search">
+		select b.reply_no
+			,b.reply
+			,b.replyer
+			,b.reply_date
+			,b.board_no
+		from (select /*+ INDEX_DESC (r reply_pk) */ rownum rn, r.*
+      		from tbl_reply r
+      		where board_no = #{boardNo}) b
+		where b.rn > (#{page} - 1) * 5
+		<![CDATA[
+		and b.rn <= #{page} * 5
+		]]>
 	</select>
 	<!-- 등록 기능 -->
 	<insert id="insertReply" parameterType="reply">
@@ -38,5 +44,18 @@
 		from tbl_reply
 		where reply_no = #{replyNo}
 	</select>
+	<!-- 댓글건수 -->
+	<select id="selectReplyCnt" resultType = "int" parameterType="int">
+		select count(1)
+		from tbl_reply
+		where board_no = #{boardNo}
+	</select>
+	<!-- Datatalbe 용도 -->
+	<select id = "selectListForDT" parameterType="int" resultType = "map">
+		select /*+ INDEX_DESC (r reply_pk) */  r.*
+      	from tbl_reply r
+      	where board_no = #{boardNo}
+	</select>
+	
 	
 </mapper>

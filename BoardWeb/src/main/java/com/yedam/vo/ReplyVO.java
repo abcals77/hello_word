@@ -11,4 +11,5 @@ public class ReplyVO {
 	private String replyer; // 댓글작성자
 	private Date replyDate; // 댓글작성일시
 	private int boardNo;; // 원본글번호
+	
 }
