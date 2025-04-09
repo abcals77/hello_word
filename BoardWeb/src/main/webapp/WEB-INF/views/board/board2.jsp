@@ -2,9 +2,13 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css">
+<script src = "https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
+<script src = "https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
 <!-- webapp/WEB-INF/views/board.jsp -->
 
-<h3>상세페이지(board.jsp)</h3>
+<h3>상세페이지(board2.jsp)</h3>
 <form action="modifyForm.do">
 	<input type="hidden" name="bno" value="${board.boardNo}">
 	<!-- 자동으로 board.get 하여 자료를 들고옴 -->
@@ -49,55 +53,33 @@
 	</table>
 </form>
 <!-- 댓글관련. -->
-<style>
-div.reply span {
-	display: inline-block;
-}
-
-div.reply ul {
-	list-style-type: none;
-}
-</style>
-<div class="container reply">
-	<!-- 등록. -->
-	<div class="header">
-		<img class="iconimage" src="images/${img}"> <input
-			class="col-sm-8" id="reply">
-		<button class="col-sm-3 btn btn-primary addReply">댓글등록</button>
-
-
-
-	</div>
-	<!-- 목록. -->
-	<div class="content">
-		<ul>
-			<li><span class="col-sm-2">글번호</span> <span class="col-sm-5">내용</span>
-				<span class="col-sm-2">작성자</span> <span class="col-sm-2">삭제</span></li>
-		</ul>
-	</div>
-	<!-- 페이징. -->
-	<nav aria-label="...">
-		<ul class="pagination pagination-sm justify-content-center">
-			<!--
-		    <li class="page-item disabled">
-		      <span class="page-link">Previous</span>
-		    </li>
-		    
-		    <li class="page-item"><a class="page-link" href="#">1</a></li>
-		    
-		    <li class="page-item active" aria-current="page">
-		      <span class="page-link">2</span>
-		    </li>
-		    
-		    <li class="page-item"><a class="page-link" href="#">3</a></li>
-		    
-		    <li class="page-item">
-		      <a class="page-link" href="#">Next</a>
-		    </li>
-		    -->
-		</ul>
-	</nav>
+<!--  
+<p><button id="addRow">Add new row</button></p>
+-->
+<div class="header">
+	<input class="col-sm-8" id="reply">
+	<button class="col-sm-3 btn btn-primary" id="addReply">댓글등록</button>
+	<button class="btn btn-danger" id="delRow">삭제</button>
 </div>
+<table id="example" class="display" style="width: 100%">
+	<thead>
+		<tr>
+			<th>댓글번호</th>
+			<th>내용</th>
+			<th>작성자</th>
+			<th>작성일시</th>
+		</tr>
+	</thead>
+	<tfoot>
+		<tr>
+			<th>댓글번호</th>
+			<th>내용</th>
+			<th>작성자</th>
+			<th>작성일시</th>
+		</tr>
+	</tfoot>
+</table>
+
 <script>
 	const bno = "${board.boardNo}";
 	const replyer = "${logId}";
@@ -109,8 +91,5 @@ div.reply ul {
 		location.href = 'deleteForm.do?bno=${board.boardNo}&page=${page}'; // 삭제화면 -> 삭제처리.
 	}
 </script>
-<!-- 
-<script src="js/boardService.js"></script>	
-<script src="js/board1.js"></script>
- -->
+
 <script src="js/board2.js"></script>
