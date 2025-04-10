@@ -22,4 +22,22 @@
 		AND start_date LIKE CONCAT(#{startDate}, '%')
 		AND end_date LIKE CONCAT(#{endDate}, '%')
 	</delete>
+
+	<!-- chart -->
+	<select id="selectWriter" resultType="map">
+		select user_name as
+		"memberName",
+		b.writer as "writer",
+		count(1) as "cnt"
+		from tbl_board b
+		join tbl_member m
+		on b.writer = m.user_id
+		group by user_name, b.writer
+	</select>
+	<!-- 로그정보 생성. -->
+	<insert id="insertLogging" parameterType="map">
+		insert into
+		tbl_logging(log_id, req_path, req_host)
+		values(loggin_seq.nextval, #{page}, #{host})
+	</insert>
 </mapper>

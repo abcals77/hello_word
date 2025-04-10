@@ -27,10 +27,7 @@
     <put-attribute name="body" value="/WEB-INF/views/loginForm.jsp" />
     <put-attribute name="header" value="" />
   </definition>
-  
-  
-  
-  
+ 
 
   <definition name="myapp.admin" template="/WEB-INF/admin/template.jsp">
     <put-attribute name="title" value="Tiles tutorial homepage" />

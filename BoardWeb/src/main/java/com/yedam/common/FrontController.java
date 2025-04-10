@@ -15,6 +15,8 @@ import com.yedam.control.AddEventControl;
 import com.yedam.control.AddReplyControl;
 import com.yedam.control.BoardControl;
 import com.yedam.control.BoardListControl;
+import com.yedam.control.ChartControl;
+import com.yedam.control.ChartJsonCont;
 import com.yedam.control.DeleteBoardControl;
 import com.yedam.control.DeleteFormControl;
 import com.yedam.control.EventFormControl;
@@ -80,6 +82,9 @@ public class FrontController extends HttpServlet {
 		map.put("/addEvent.do", new AddEventControl());
 		map.put("/removeEvent.do", new RemoveEventControl());
 		map.put("/eventList.do", new eventListControl());
+		// 구글차트
+		map.put("/chart.do", new ChartControl());
+		map.put("/chartJson.do", new ChartJsonCont());
 
 	}
 

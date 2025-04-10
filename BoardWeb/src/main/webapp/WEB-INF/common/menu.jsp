@@ -31,5 +31,6 @@
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="signForm.do">회원가입</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="javascript.do">js연습</a>
                 	<a class="list-group-item list-group-item-action list-group-item-light p-3" href="eventForm.do">이벤트</a>
+                	<a class="list-group-item list-group-item-action list-group-item-light p-3" href="chart.do">Chart</a>
                 </div>
             </div>

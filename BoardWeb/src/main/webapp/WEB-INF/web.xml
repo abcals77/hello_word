@@ -4,6 +4,15 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
 	id="WebApp_ID" version="4.0">
 	<display-name>BoardWeb</display-name>
+	
+	<filter>
+		<filter-name>one</filter-name>
+		<filter-class>com.yedam.common.FilterOne</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>one</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 
 	<listener>
 		<listener-class>org.apache.tiles.extras.complete.CompleteAutoloadTilesListener</listener-class>
