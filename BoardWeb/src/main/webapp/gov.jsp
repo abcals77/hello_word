@@ -22,7 +22,10 @@
 		</tbody>		
 	</table>
 	
+	<ul id="list"></ul>
+	
 	<script>
+		
 		let url = "https://api.odcloud.kr/api/15077586/v1/centers?page=1&perPage=284&serviceKey=q8DD9W8q4XBY24HHLTo8g7PZalXiw6wnIuWN95KUPIP1Dwy%2FGaKokqcyLTGhjoih9lHQYyP%2FIESNDCddp%2BbP%2Bw%3D%3D";
 		let centerList = []; // Array.filter(), Array.reduce();
 		
@@ -62,7 +65,7 @@
 			// 이벤트... this 1) 함수 : window 2) 이벤트 : 이벤트대상.
 		document.querySelector('#choice').addEventListener('change',function(e){
 			// console.log(this);
-			let val = this.value;
+			let val = this.value; // 사용자의 선택값
 			document.querySelector('#centerList').innerHTML = ""; // 이전 목록 지우기
 			
 			centerList//
@@ -116,5 +119,6 @@
 			
 		}
 	</script>
+	<script src="js/array2.js"></script>
 </body>
 </html>

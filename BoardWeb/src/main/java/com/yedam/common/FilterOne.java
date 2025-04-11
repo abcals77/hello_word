@@ -49,7 +49,10 @@ public class FilterOne implements Filter {
 		
 		// 로그 저장
 		EventService svc = new EventServiceImpl();
-		svc.logCreate(map);
+		if(!map.get("page").contains("images")) {
+			svc.logCreate(map);
+		}
+		
 		if(blockList.contains(ip)) {
 			return;
 		}
